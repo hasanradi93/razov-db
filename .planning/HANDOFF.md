@@ -32,9 +32,18 @@ chose these options:
 | 1 | SchemaZone rebuilt with base `/razov-db/schemazone/` (128 tests pass) | done |
 | 2 | Site links made relative; `404.html` uses `/razov-db/...`; canonical, og and JSON-LD URLs moved | done |
 | 3 | `sitemap.xml` lists `/razov-db/`, `datapilot/`, `schemazone/`, `legal.html`; `robots.txt` removed (root only) | done |
-| 4 | Create the public repo, push, turn Pages on, tell datapilot-ai-e5 | in progress |
-| 5 | DataPilot page in `datapilot/` (datapilot-ai-e5) | waiting for the peer |
-| 6 | Root hub and forwarders (repo `hasanradi93.github.io`) | after step 4 |
+| 4 | Create the public repo, push, turn Pages on, tell datapilot-ai-e5 | done 2026-11-25 (e57855d) |
+| 5 | DataPilot page in `datapilot/` (datapilot-ai-e5) | done: bd8d3c4; the old `/datapilot/` forwards here |
+| 6 | Root hub and forwarders (repo `hasanradi93.github.io`, 542f8f9) | done 2026-11-25 |
+
+Live check, 2026-11-25:
+- These return 200: `/razov-db/`, `datapilot/`, `schemazone/`, `legal.html` and `sitemap.xml`.
+- A missing path under `/razov-db/` returns this repo's 404 page.
+- In Chrome, the old `/schemazone/` lands on `/razov-db/schemazone/` with the hash kept, and the PostgreSQL sample
+  opens (7 tables, 7 relations).
+- The old `/legal.html#refunds` lands on `/razov-db/legal.html#refunds`.
+- The old Pages builds API shows "errored" for the first two pushes. The Actions run `pages-build-deployment`
+  succeeded, and that run is the one that serves the site.
 
 ## Switches for later
 
