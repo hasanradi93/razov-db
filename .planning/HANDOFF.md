@@ -35,6 +35,20 @@ chose these options:
 | 4 | Create the public repo, push, turn Pages on, tell datapilot-ai-e5 | done 2026-11-25 (e57855d) |
 | 5 | DataPilot page in `datapilot/` (datapilot-ai-e5) | done: bd8d3c4; the old `/datapilot/` forwards here |
 | 6 | Root hub and forwarders (repo `hasanradi93.github.io`, 542f8f9) | done 2026-11-25 |
+| 7 | SQLNext wording: "converts MySQL databases to newer versions" (1.0 is MySQL-only) | done 2026-11-25 (d15a3aa) |
+| 8 | Brand (owner, done by datapilot-ai-8d): razov.tech header shared with Razov Bots, Anybody + Readex Pro fonts, "Razov DB" in visible text; legal page names RAZOV.tech solutions as the parent | done 2026-11-25 (b89da48, 0d56127, a413e7c) |
+| 9 | SchemaZone build with the brand: "by Razov DB", title "SchemaZone · Razov DB", favicon copied from this repo's favicon.svg | done 2026-11-25 (b1e9de2) |
+
+## Brand (since 2026-11-25)
+
+- One family, razov.tech, with two lines. Razov Bots (teal star) is left untouched. Razov DB uses a violet
+  star (#a78bfa; the light theme uses the darker --sq, #6d28d9).
+- Header lockup: the eight-point star, `razov.tech` (links to the hub until the razov.tech domain is live,
+  then to https://razov.tech), the branch arrow `↳`, and the leaf `db`.
+- Fonts: Anybody for the brand and headings, Readex Pro for text, served from `assets/fonts/` (SIL OFL,
+  `OFL.txt`). Google Fonts is no longer used.
+- Visible text says "Razov DB". The JSON-LD and the legal page name RAZOV.tech solutions as the parent company.
+- `favicon.svg`: a rounded square with the violet star and a centre dot. SchemaZone uses a copy of it.
 
 Live check, 2026-11-25:
 - These return 200: `/razov-db/`, `datapilot/`, `schemazone/`, `legal.html` and `sitemap.xml`.
