@@ -1,0 +1,442 @@
+{
+  "_about": "Plans, prices and features of DataPilot AI. Features, plans, 'built' and limits are generated from licensing/catalog.py (built=false means coming soon). Prices: the owner's decision 2026-11-25. Change a price here and every page follows.",
+  "updated": "2026-11-25",
+  "currency": "USD",
+  "plans": [
+    {
+      "id": "free",
+      "name": {
+        "en": "Free",
+        "ar": "المجانية"
+      },
+      "tagline": {
+        "en": "For trying DataPilot and for small teams.",
+        "ar": "لتجربة DataPilot وللفرق الصغيرة."
+      },
+      "price": {
+        "monthly": 0,
+        "yearly": 0
+      },
+      "action": "download",
+      "extras": [
+        {
+          "en": "Up to 3 active user accounts",
+          "ar": "حتى 3 حسابات مستخدمين نشطة"
+        }
+      ]
+    },
+    {
+      "id": "pro",
+      "name": {
+        "en": "Pro",
+        "ar": "Pro"
+      },
+      "tagline": {
+        "en": "For a company and all its people.",
+        "ar": "لشركة وكل العاملين فيها."
+      },
+      "price": {
+        "monthly": 49,
+        "yearly": 490
+      },
+      "yearlyNote": {
+        "en": "2 months free",
+        "ar": "شهران مجاناً"
+      },
+      "action": "buy",
+      "checkout": {
+        "monthly": "proMonthlyPriceId",
+        "yearly": "proYearlyPriceId"
+      },
+      "highlight": {
+        "en": "Unlimited users",
+        "ar": "مستخدمون بلا حد"
+      },
+      "extras": [
+        {
+          "en": "Unlimited users",
+          "ar": "عدد غير محدود من المستخدمين"
+        },
+        {
+          "en": "1 website key for the chat widget",
+          "ar": "مفتاح موقع واحد لأداة الدردشة"
+        }
+      ]
+    },
+    {
+      "id": "enterprise",
+      "name": {
+        "en": "Enterprise",
+        "ar": "Enterprise"
+      },
+      "tagline": {
+        "en": "Pro, with us setting it up for your database.",
+        "ar": "خطة Pro، ونحن نُعدّها لقاعدة بياناتك."
+      },
+      "price": {
+        "monthlyFrom": 149
+      },
+      "quoted": true,
+      "action": "contact",
+      "extras": [
+        {
+          "en": "Setup service: we draft the glossary and the setup questions for your database",
+          "ar": "خدمة الإعداد: نكتب مسودة المسرد وأسئلة الإعداد لقاعدة بياناتك"
+        },
+        {
+          "en": "Priority support",
+          "ar": "دعم ذو أولوية"
+        },
+        {
+          "en": "Unlimited website keys",
+          "ar": "مفاتيح مواقع بلا حد"
+        }
+      ]
+    }
+  ],
+  "features": [
+    {
+      "key": "chat",
+      "plan": "free",
+      "built": true,
+      "label": {
+        "en": "Chat with your data",
+        "ar": "تحدّث مع بياناتك"
+      },
+      "desc": {
+        "en": "Ask questions in plain words, in English or Arabic, and get tables.",
+        "ar": "اطرح أسئلتك بكلمات بسيطة، بالعربية أو الإنجليزية، واحصل على جداول."
+      }
+    },
+    {
+      "key": "quick_questions",
+      "plan": "free",
+      "built": true,
+      "label": {
+        "en": "Quick questions",
+        "ar": "أسئلة سريعة"
+      },
+      "desc": {
+        "en": "Saved questions: type / in Chat, or click a quick button.",
+        "ar": "أسئلة محفوظة: اكتب / في المحادثة أو انقر زراً سريعاً."
+      }
+    },
+    {
+      "key": "suggestions",
+      "plan": "free",
+      "built": true,
+      "label": {
+        "en": "Starter questions",
+        "ar": "أسئلة للبدء"
+      },
+      "desc": {
+        "en": "Questions to start with, written by the AI from your glossary.",
+        "ar": "أسئلة يكتبها الذكاء الاصطناعي من مسرد بياناتك لتبدأ بها."
+      }
+    },
+    {
+      "key": "data_access",
+      "plan": "free",
+      "built": true,
+      "label": {
+        "en": "Data access by role",
+        "ar": "الوصول إلى البيانات حسب الدور"
+      },
+      "desc": {
+        "en": "Choose which role may use each table and column.",
+        "ar": "اختر الدور الذي يمكنه استخدام كل جدول وكل عمود."
+      }
+    },
+    {
+      "key": "verify",
+      "plan": "free",
+      "built": true,
+      "label": {
+        "en": "Verify page",
+        "ar": "صفحة التحقق"
+      },
+      "desc": {
+        "en": "Questions with known answers: run them to see which the AI gets right.",
+        "ar": "أسئلة إجاباتها معروفة: شغّلها لترى أيها يجيب عنه الذكاء الاصطناعي بشكل صحيح."
+      }
+    },
+    {
+      "key": "export_csv",
+      "plan": "free",
+      "built": true,
+      "label": {
+        "en": "Export answers to CSV",
+        "ar": "تصدير الإجابات إلى CSV"
+      },
+      "desc": {
+        "en": "The Export CSV button under each answer.",
+        "ar": "زر Export CSV تحت كل إجابة."
+      }
+    },
+    {
+      "key": "db_mysql",
+      "plan": "free",
+      "built": true,
+      "label": {
+        "en": "MySQL and MariaDB databases",
+        "ar": "قواعد بيانات MySQL وMariaDB"
+      },
+      "desc": {
+        "en": "Connect to MySQL or MariaDB. SQLite files are always included.",
+        "ar": "اتصل بـ MySQL أو MariaDB. ملفات SQLite مشمولة دائماً."
+      }
+    },
+    {
+      "key": "charts_basic",
+      "plan": "free",
+      "built": true,
+      "label": {
+        "en": "Basic charts",
+        "ar": "رسوم بيانية أساسية"
+      },
+      "desc": {
+        "en": "Bar, line and pie charts.",
+        "ar": "أعمدة وخطوط ودوائر."
+      }
+    },
+    {
+      "key": "dashboard",
+      "plan": "pro",
+      "built": true,
+      "label": {
+        "en": "Dashboard",
+        "ar": "لوحة المعلومات"
+      },
+      "desc": {
+        "en": "Tiles with numbers and charts that refresh on their own.",
+        "ar": "مربعات بأرقام ورسوم بيانية تتحدّث تلقائياً."
+      }
+    },
+    {
+      "key": "charts_pro",
+      "plan": "pro",
+      "built": true,
+      "label": {
+        "en": "Full chart library",
+        "ar": "مكتبة الرسوم البيانية الكاملة"
+      },
+      "desc": {
+        "en": "Horizontal bar, area, stacked bar, scatter, funnel, heatmap, treemap.",
+        "ar": "أعمدة أفقية، مساحات، أعمدة مكدّسة، نقاط مبعثرة، قمع، خريطة حرارية، خريطة شجرية."
+      }
+    },
+    {
+      "key": "export_excel",
+      "plan": "pro",
+      "built": true,
+      "label": {
+        "en": "Export answers to Excel",
+        "ar": "تصدير الإجابات إلى Excel"
+      },
+      "desc": {
+        "en": "Numbers as numbers, dates as dates, and a sheet about the question.",
+        "ar": "الأرقام أرقام والتواريخ تواريخ، مع ورقة تصف السؤال."
+      }
+    },
+    {
+      "key": "export_pdf",
+      "plan": "pro",
+      "built": false,
+      "label": {
+        "en": "Export answers to PDF",
+        "ar": "تصدير الإجابات إلى PDF"
+      },
+      "desc": {
+        "en": "Formatted PDF reports.",
+        "ar": "تقارير PDF منسّقة."
+      }
+    },
+    {
+      "key": "db_postgresql",
+      "plan": "pro",
+      "built": true,
+      "label": {
+        "en": "PostgreSQL and Supabase databases",
+        "ar": "قواعد بيانات PostgreSQL وSupabase"
+      },
+      "desc": {
+        "en": "Connect to PostgreSQL, including Supabase.",
+        "ar": "اتصل بـ PostgreSQL، بما في ذلك Supabase."
+      }
+    },
+    {
+      "key": "database_browser",
+      "plan": "pro",
+      "built": true,
+      "label": {
+        "en": "Database page",
+        "ar": "صفحة قاعدة البيانات"
+      },
+      "desc": {
+        "en": "Browse every table, its columns and its rows.",
+        "ar": "تصفّح كل جدول وأعمدته وصفوفه."
+      }
+    },
+    {
+      "key": "shared_store",
+      "plan": "pro",
+      "built": true,
+      "label": {
+        "en": "Shared store for teams",
+        "ar": "مخزن مشترك للفرق"
+      },
+      "desc": {
+        "en": "Users, definitions, dashboards and audit shared by every PC, on your own MySQL, MariaDB or PostgreSQL server.",
+        "ar": "المستخدمون والتعريفات ولوحات المعلومات وسجل التدقيق مشتركة بين كل الأجهزة، على خادم MySQL أو MariaDB أو PostgreSQL لديك."
+      }
+    },
+    {
+      "key": "multi_database",
+      "plan": "pro",
+      "built": true,
+      "label": {
+        "en": "Several databases",
+        "ar": "عدة قواعد بيانات"
+      },
+      "desc": {
+        "en": "Save several connections and switch between them. Each keeps its own definitions, tiles and glossary.",
+        "ar": "احفظ عدة اتصالات وانتقل بينها. لكل قاعدة تعريفاتها ومربعاتها ومسردها."
+      }
+    },
+    {
+      "key": "website_widget",
+      "plan": "pro",
+      "built": true,
+      "label": {
+        "en": "Website chat widget and WordPress plugin",
+        "ar": "أداة دردشة للمواقع وإضافة WordPress"
+      },
+      "desc": {
+        "en": "The chat on a web page, an admin panel or a WordPress site, served by the DataPilot web server.",
+        "ar": "المحادثة نفسها في صفحة ويب أو لوحة إدارة أو موقع WordPress، يقدّمها خادم DataPilot."
+      }
+    },
+    {
+      "key": "server_mode",
+      "plan": "pro",
+      "built": true,
+      "label": {
+        "en": "Web app with sign-in",
+        "ar": "تطبيق ويب مع تسجيل الدخول"
+      },
+      "desc": {
+        "en": "People sign in from a browser with their own account, on the DataPilot web server. Chat today; more pages later.",
+        "ar": "يسجّل الأشخاص الدخول من المتصفح بحساباتهم على خادم DataPilot. المحادثة متاحة الآن، وصفحات أخرى لاحقاً."
+      }
+    },
+    {
+      "key": "api_access",
+      "plan": "enterprise",
+      "built": false,
+      "label": {
+        "en": "API for other systems",
+        "ar": "واجهة برمجية للأنظمة الأخرى"
+      },
+      "desc": {
+        "en": "Other software asks questions through the API.",
+        "ar": "تطرح البرامج الأخرى أسئلتها عبر الواجهة البرمجية."
+      }
+    },
+    {
+      "key": "audit_viewer",
+      "plan": "enterprise",
+      "built": false,
+      "label": {
+        "en": "Audit log screen",
+        "ar": "شاشة سجل التدقيق"
+      },
+      "desc": {
+        "en": "See, search and export the audit log.",
+        "ar": "اعرض سجل التدقيق وابحث فيه وصدّره."
+      }
+    },
+    {
+      "key": "scheduled_reports",
+      "plan": "enterprise",
+      "built": false,
+      "label": {
+        "en": "Scheduled reports",
+        "ar": "تقارير مجدولة"
+      },
+      "desc": {
+        "en": "Answers sent by email on a schedule.",
+        "ar": "إجابات تُرسل بالبريد الإلكتروني وفق جدول."
+      }
+    },
+    {
+      "key": "backups",
+      "plan": "enterprise",
+      "built": false,
+      "label": {
+        "en": "Database backups",
+        "ar": "نسخ احتياطية لقاعدة البيانات"
+      },
+      "desc": {
+        "en": "Scheduled backups to a folder you choose.",
+        "ar": "نسخ احتياطية مجدولة إلى مجلد تختاره."
+      }
+    },
+    {
+      "key": "branding",
+      "plan": "enterprise",
+      "built": false,
+      "label": {
+        "en": "Your own branding",
+        "ar": "علامتك التجارية"
+      },
+      "desc": {
+        "en": "Your name, logo and colours.",
+        "ar": "اسمك وشعارك وألوانك."
+      }
+    }
+  ],
+  "limits": {
+    "users": {
+      "label": {
+        "en": "Active user accounts",
+        "ar": "حسابات المستخدمين النشطة"
+      },
+      "values": {
+        "free": 3,
+        "pro": null,
+        "enterprise": null
+      }
+    },
+    "widget_sites": {
+      "label": {
+        "en": "Website keys",
+        "ar": "مفاتيح المواقع"
+      },
+      "values": {
+        "free": 0,
+        "pro": 1,
+        "enterprise": null
+      }
+    }
+  },
+  "services": [
+    {
+      "label": {
+        "en": "Setup service",
+        "ar": "خدمة الإعداد"
+      },
+      "plans": [
+        "enterprise"
+      ]
+    },
+    {
+      "label": {
+        "en": "Priority support",
+        "ar": "دعم ذو أولوية"
+      },
+      "plans": [
+        "enterprise"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161b23" media="(prefers-color-scheme: dark)">
+<title>DataPilot AI: ask your company database in plain words</title>
+<meta name="description" content="DataPilot AI is a Windows app that turns questions in English or Arabic into tables and charts, for any company database: SQLite, MySQL, MariaDB and PostgreSQL. Read-only queries, your own AI key, and your data stays with you.">
+<link rel="canonical" href="https://hasanradi93.github.io/razov-db/datapilot/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DataPilot AI">
+<meta property="og:title" content="DataPilot AI: ask your company database in plain words">
+<meta property="og:description" content="A Windows app that turns questions in English or Arabic into tables and charts, for any company database. Read-only queries, your own AI key, your data stays with you. Free for up to 3 users.">
+<meta property="og:url" content="https://hasanradi93.github.io/razov-db/datapilot/">
+<meta property="og:image" content="https://hasanradi93.github.io/razov-db/datapilot/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="DataPilot AI: a question in plain words and its answer as a table and a bar chart.">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ar_AR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="styles.css">
+<!--
+  DataPilot AI public website. Plain static files: index.html (this shell and every section), styles.css,
+  app.js (routing, language, theme, checkout buttons), config.js (contact, download, version, checkout
+  links) and pricing.json (plans, prices, features; generated from licensing/catalog.py).
+  The page never scrolls: the shell is 100dvh and only the panes inside scroll.
+  Every text is written twice: data-l="en" and data-l="ar"; the language button shows one of them.
+
+  ARABIC: the Arabic text on this site was written without a native reader. A native Arabic reader
+  should check every data-l="ar" block before the site is promoted to Arabic-speaking customers.
+
+  Try: ?lang=ar  #pricing  #pricing/compare  #download/guide  #faq/buying  #terms  #privacy  #refunds
+-->
+<script>
+  /* Before the first paint: theme and language, so the page does not flash. */
+  (function () {
+    var d = document.documentElement, lang = null;
+    d.classList.add("js");
+    try {
+      var t = localStorage.getItem("dp-site-theme");
+      if (t === "light" || t === "dark") { d.setAttribute("data-theme", t); }
+      lang = localStorage.getItem("dp-site-lang");
+    } catch (e) { /* storage blocked: follow the system theme, English */ }
+    var q = /[?&]lang=(ar|en)\b/.exec(location.search);
+    if (q) { lang = q[1]; }
+    if (lang === "ar") { d.lang = "ar"; d.dir = "rtl"; }
+  })();
+</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-logo" viewBox="0 0 24 24"><path d="M5 19V11M10 19V5M15 19v-6M20 19V9"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 11L12 4l8.5 7"/><path d="M5.5 9.5V20h5v-5.5h3V20h5V9.5"/></symbol>
+    <symbol id="i-features" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></symbol>
+    <symbol id="i-how" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H15a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h6.5"/></symbol>
+    <symbol id="i-pricing" viewBox="0 0 24 24"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+    <symbol id="i-faq" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17.2v.1"/></symbol>
+    <symbol id="i-contact" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></symbol>
+    <symbol id="i-legal" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h7"/></symbol>
+    <symbol id="i-company" viewBox="0 0 24 24"><path d="M4 21V5l8-2v18M12 8h8v13M2 21h20M7 8h2M7 12h2M7 16h2M15 12h2M15 16h2"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+    <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.5"/><path d="M4.5 5.5v13c0 1.4 3.4 2.5 7.5 2.5s7.5-1.1 7.5-2.5v-13M4.5 12c0 1.4 3.4 2.5 7.5 2.5s7.5-1.1 7.5-2.5"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3M14 9l2 2"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.2v.1"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+    <symbol id="i-windows" viewBox="0 0 24 24"><path d="M3 5.8l7.5-1.1v6.8H3zM12.5 4.4L21 3.2v8.3h-8.5zM3 12.5h7.5v6.8L3 18.2zM12.5 12.5H21v8.3l-8.5-1.2z"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2z"/><path d="M4 20a2 2 0 0 0 2 1h13v-3"/></symbol>
+  </defs>
+</svg>
+
+<a class="skip" href="#content" id="skip"><span data-l="en">Skip to content</span><span data-l="ar">انتقل إلى المحتوى</span></a>
+
+<div class="app" id="app">
+  <header class="header">
+    <a class="brand" href="#home" id="brand" aria-label="DataPilot AI, home">
+      <span class="mark" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-logo"/></svg></span>
+      <span class="brand-name">DataPilot AI</span>
+    </a>
+    <span class="hdr-title" id="hdr-title" aria-hidden="true"></span>
+    <span class="spacer"></span>
+    <a class="btn primary hide-phone" href="#download"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-download"/></svg><span data-l="en">Download free</span><span data-l="ar">نزّله مجاناً</span></a>
+    <button type="button" class="btn ghost iconbtn" id="btn-theme" aria-label="Switch to dark theme"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-moon"/></svg></button>
+    <button type="button" class="btn ghost" id="btn-lang" aria-label="Switch to Arabic"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-globe"/></svg><span class="hide-phone"><span data-l="en" lang="ar">العربية</span><span data-l="ar" lang="en">English</span></span></button>
+  </header>
+
+  <nav class="sidebar" id="sidebar" aria-label="Sections">
+    <div class="side-cap" aria-hidden="true"><span data-l="en">Sections</span><span data-l="ar">الأقسام</span></div>
+    <ul class="nav">
+      <li><a href="#home" data-nav="home"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-home"/></svg><span class="lbl"><span data-l="en">Home</span><span data-l="ar">الرئيسية</span></span></a></li>
+      <li><a href="#features" data-nav="features"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-features"/></svg><span class="lbl"><span data-l="en">Features</span><span data-l="ar">الميزات</span></span></a></li>
+      <li><a href="#how" data-nav="how"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-how"/></svg><span class="lbl"><span data-l="en">How it works</span><span data-l="ar">كيف يعمل</span></span></a></li>
+      <li><a href="#pricing" data-nav="pricing"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-pricing"/></svg><span class="lbl"><span data-l="en">Pricing</span><span data-l="ar">الأسعار</span></span></a></li>
+      <li><a href="#download" data-nav="download"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-download"/></svg><span class="lbl"><span data-l="en">Download</span><span data-l="ar">التنزيل</span></span></a></li>
+      <li><a href="#faq" data-nav="faq"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-faq"/></svg><span class="lbl"><span data-l="en">FAQ</span><span data-l="ar">الأسئلة الشائعة</span></span></a></li>
+      <li><a href="#contact" data-nav="contact"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-contact"/></svg><span class="lbl"><span data-l="en">Contact</span><span data-l="ar">تواصل معنا</span></span></a></li>
+    </ul>
+    <ul class="nav nav-foot">
+      <li><a href="#terms" data-nav="legal"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-legal"/></svg><span class="lbl"><span data-l="en">Terms and privacy</span><span data-l="ar">الشروط والخصوصية</span></span></a></li>
+      <li><a href="https://hasanradi93.github.io/razov-db/" class="company"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-company"/></svg><span class="lbl"><span data-l="en">Part of RAZOV.tech solutions</span><span data-l="ar">جزء من حلول RAZOV.tech</span></span></a></li>
+    </ul>
+  </nav>
+
+  <main class="main" id="content" tabindex="-1">
+
+    <!-- ===================== HOME ===================== -->
+    <section class="view on" id="view-home" data-view="home">
+      <div class="panel on" id="p-home" role="region" aria-labelledby="h-home" tabindex="0">
+        <div class="wrap">
+          <div class="hero">
+            <div>
+              <p class="eyebrow"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-windows"/></svg><span data-l="en">For Windows · works with any company database</span><span data-l="ar">لنظام Windows · يعمل مع أي قاعدة بيانات لشركتك</span></p>
+              <h1 id="h-home" tabindex="-1"><span data-l="en">Ask your company database in plain words.</span><span data-l="ar">اسأل قاعدة بيانات شركتك بكلمات بسيطة.</span></h1>
+              <p class="lead"><span data-l="en">DataPilot AI turns questions in English or Arabic into tables and charts. The AI writes the query, DataPilot checks that it only reads, and you get the answer. Your data stays on your PC and your network.</span><span data-l="ar">يحوّل DataPilot AI أسئلتك بالعربية أو الإنجليزية إلى جداول ورسوم بيانية. يكتب الذكاء الاصطناعي الاستعلام، ويتحقق DataPilot من أنه للقراءة فقط، ثم تصلك الإجابة. تبقى بياناتك على جهازك وفي شبكتك.</span></p>
+              <div class="row">
+                <a class="btn primary big" data-dl href="https://github.com/hasanradi93/datapilot/releases/latest/download/DataPilotAI-Setup.exe"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-download"/></svg><span data-l="en">Download free for Windows</span><span data-l="ar">نزّل النسخة المجانية لـ Windows</span></a>
+                <a class="btn big" href="#pricing"><span data-l="en">See pricing</span><span data-l="ar">اطّلع على الأسعار</span></a>
+              </div>
+              <p class="hero-meta"><span data-l="en">Free for up to 3 users · Windows 10 and 11, 64-bit · Version <span data-version>0.3.0</span></span><span data-l="ar">مجاني حتى 3 مستخدمين · Windows 10 و11 بنظام 64 بت · الإصدار <span data-version class="ltr">0.3.0</span></span></p>
+            </div>
+
+            <figure class="preview" aria-labelledby="pv-cap" style="margin:0">
+              <figcaption class="preview-cap" id="pv-cap"><span data-l="en">Example with made-up data</span><span data-l="ar">مثال ببيانات وهمية</span><span aria-hidden="true">DataPilot AI</span></figcaption>
+              <div class="msg me"><span data-l="en">Which departments have the most open requests?</span><span data-l="ar">ما الأقسام التي لديها أكبر عدد من الطلبات المفتوحة؟</span></div>
+              <div class="msg bot">
+                <div class="who"><span class="mark" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-logo"/></svg></span>DataPilot</div>
+                <p class="trace"><span data-l="en">Read 2 tables · 5 rows · 0.7 s · read only</span><span data-l="ar">قرأ جدولين · 5 صفوف · 0.7 ث · قراءة فقط</span></p>
+                <div class="mini">
+                  <div class="tablewrap">
+                    <table data-l="en">
+                      <thead><tr><th scope="col">Department</th><th scope="col" class="num">Open requests</th></tr></thead>
+                      <tbody><tr><td>Operations</td><td class="num">48</td></tr><tr><td>Finance</td><td class="num">31</td></tr><tr><td>IT</td><td class="num">27</td></tr><tr><td>HR</td><td class="num">19</td></tr><tr><td>Legal</td><td class="num">8</td></tr></tbody>
+                    </table>
+                    <table data-l="ar">
+                      <thead><tr><th scope="col">القسم</th><th scope="col" class="num">الطلبات المفتوحة</th></tr></thead>
+                      <tbody><tr><td>العمليات</td><td class="num">48</td></tr><tr><td>المالية</td><td class="num">31</td></tr><tr><td>تقنية المعلومات</td><td class="num">27</td></tr><tr><td>الموارد البشرية</td><td class="num">19</td></tr><tr><td>الشؤون القانونية</td><td class="num">8</td></tr></tbody>
+                    </table>
+                  </div>
+                  <div class="bars" aria-hidden="true"><span style="height:100%"></span><span style="height:65%"></span><span style="height:56%"></span><span style="height:40%"></span><span style="height:17%"></span></div>
+                </div>
+              </div>
+            </figure>
+          </div>
+
+          <div class="grid-cards points">
+            <article class="card">
+              <div class="ico-tile" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-database"/></svg></div>
+              <h2><span data-l="en">Any database, any business</span><span data-l="ar">أي قاعدة بيانات، لأي نشاط</span></h2>
+              <p><span data-l="en">SQLite, MySQL, MariaDB and PostgreSQL. Accounting, HR, a school, a clinic, logistics: DataPilot learns your tables from your own schema, glossary and definitions.</span><span data-l="ar">SQLite وMySQL وMariaDB وPostgreSQL. محاسبة أو موارد بشرية أو مدرسة أو عيادة أو خدمات لوجستية: يتعرّف DataPilot على جداولك من بنية قاعدة بياناتك ومسردك وتعريفاتك.</span></p>
+            </article>
+            <article class="card">
+              <div class="ico-tile" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg></div>
+              <h2><span data-l="en">Reads, never writes</span><span data-l="ar">يقرأ ولا يكتب أبداً</span></h2>
+              <p><span data-l="en">The AI may write only a read-only query. DataPilot checks every query before it runs and refuses anything that could change data. Every query has a time limit.</span><span data-l="ar">لا يُسمح للذكاء الاصطناعي إلا بكتابة استعلام للقراءة فقط. يفحص DataPilot كل استعلام قبل تشغيله ويرفض أي شيء قد يغيّر البيانات. ولكل استعلام حدّ زمني.</span></p>
+            </article>
+            <article class="card">
+              <div class="ico-tile" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-key"/></svg></div>
+              <h2><span data-l="en">Your data, your AI key</span><span data-l="ar">بياناتك ومفتاحك</span></h2>
+              <p><span data-l="en">The app runs on your PC. You choose the AI (Claude, OpenAI, Gemini or a local model) and use your own key. Whole rows of your data are never sent to the AI.</span><span data-l="ar">يعمل التطبيق على جهازك. أنت تختار الذكاء الاصطناعي (Claude أو OpenAI أو Gemini أو نموذجاً محلياً) وتستخدم مفتاحك الخاص. لا تُرسل صفوف بياناتك كاملةً إلى الذكاء الاصطناعي أبداً.</span></p>
+            </article>
+          </div>
+
+          <div class="strip">
+            <div class="card">
+              <h2><span data-l="en">Works with your database</span><span data-l="ar">يعمل مع قاعدة بياناتك</span></h2>
+              <div class="pills ltr"><span>SQLite</span><span>MySQL</span><span>MariaDB</span><span>PostgreSQL</span><span>Supabase</span></div>
+              <p class="small muted"><span data-l="en">PostgreSQL and Supabase with Pro.</span><span data-l="ar">PostgreSQL وSupabase مع خطة Pro.</span></p>
+            </div>
+            <div class="card">
+              <h2><span data-l="en">With the AI you choose</span><span data-l="ar">مع الذكاء الاصطناعي الذي تختاره</span></h2>
+              <div class="pills ltr"><span>Anthropic Claude</span><span>OpenAI</span><span>Google Gemini</span><span>Ollama (local)</span></div>
+              <p class="small muted"><span data-l="en">Or another OpenAI-compatible service. You pay your AI provider directly.</span><span data-l="ar">أو أي خدمة أخرى متوافقة مع OpenAI. تدفع لمزوّد الذكاء الاصطناعي مباشرةً.</span></p>
+            </div>
+          </div>
+
+          <footer class="site-foot small muted">
+            <span><span data-l="en">DataPilot AI is part of <a href="https://hasanradi93.github.io/razov-db/">RAZOV.tech solutions</a>.</span><span data-l="ar">DataPilot AI جزء من <a href="https://hasanradi93.github.io/razov-db/">حلول RAZOV.tech</a>.</span></span>
+            <a href="#terms"><span data-l="en">Terms</span><span data-l="ar">الشروط</span></a>
+            <a href="#privacy"><span data-l="en">Privacy</span><span data-l="ar">الخصوصية</span></a>
+            <a href="#refunds"><span data-l="en">Refunds</span><span data-l="ar">الاسترداد</span></a>
+            <a href="#contact"><span data-l="en">Contact</span><span data-l="ar">تواصل معنا</span></a>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FEATURES ===================== -->
+    <section class="view" id="view-features" data-view="features">
+      <div class="pagehead">
+        <h1 id="h-features" tabindex="-1"><span data-l="en">Features</span><span data-l="ar">الميزات</span></h1>
+        <div class="tabs" role="tablist" aria-labelledby="h-features">
+          <button type="button" role="tab" class="tab" id="t-features-ask" aria-controls="p-features-ask" aria-selected="true" tabindex="0" data-tab="ask"><span data-l="en">Ask and see</span><span data-l="ar">اسأل وشاهد</span></button>
+          <button type="button" role="tab" class="tab" id="t-features-control" aria-controls="p-features-control" aria-selected="false" tabindex="-1" data-tab="control"><span data-l="en">Safety and control</span><span data-l="ar">الأمان والتحكم</span></button>
+          <button type="button" role="tab" class="tab" id="t-features-data" aria-controls="p-features-data" aria-selected="false" tabindex="-1" data-tab="data"><span data-l="en">Databases and AI</span><span data-l="ar">قواعد البيانات والذكاء الاصطناعي</span></button>
+          <button type="button" role="tab" class="tab" id="t-features-teams" aria-controls="p-features-teams" aria-selected="false" tabindex="-1" data-tab="teams"><span data-l="en">Teams and the web</span><span data-l="ar">الفرق والويب</span></button>
+        </div>
+      </div>
+
+      <div class="panel on" role="tabpanel" id="p-features-ask" aria-labelledby="t-features-ask" tabindex="0" data-tab="ask">
+        <div class="wrap">
+          <div class="grid-cards" data-l="en">
+            <article class="card"><div class="card-head"><h2>Chat with your data</h2><span class="badge">Free</span></div><p>Type a question in English or Arabic. The answer comes as a table, and you can ask for a chart. Follow-up questions remember the ones before.</p></article>
+            <article class="card"><div class="card-head"><h2>See how it got the answer</h2><span class="badge">Free</span></div><p>Click <span class="ui">Thought for…</span> under an answer to see each step and the query that ran.</p></article>
+            <article class="card"><div class="card-head"><h2>Quick questions</h2><span class="badge">Free</span></div><p>Save the questions you ask often. Type <kbd>/</kbd> in Chat to pick one, or click a quick button.</p></article>
+            <article class="card"><div class="card-head"><h2>Starter questions</h2><span class="badge">Free</span></div><p>The AI writes questions to start with from your own glossary, so they fit your database.</p></article>
+            <article class="card"><div class="card-head"><h2>Basic charts</h2><span class="badge">Free</span></div><p>Bar, line and pie charts.</p></article>
+            <article class="card"><div class="card-head"><h2>Full chart library</h2><span class="badge pro">Pro</span></div><p>Horizontal bar, area, stacked bar, scatter, funnel, heatmap and treemap.</p></article>
+            <article class="card"><div class="card-head"><h2>Dashboard</h2><span class="badge pro">Pro</span></div><p>Tiles with numbers and charts that refresh on their own.</p></article>
+            <article class="card"><div class="card-head"><h2>Export to CSV</h2><span class="badge">Free</span></div><p>The <span class="ui">Export CSV</span> button under every answer.</p></article>
+            <article class="card"><div class="card-head"><h2>Export to Excel</h2><span class="badge pro">Pro</span></div><p>Numbers stay numbers, dates stay dates, and a sheet says what was asked.</p></article>
+            <article class="card"><div class="card-head"><h2>Export to PDF</h2><span class="badge soon">Coming soon</span></div><p>Formatted PDF reports, in Pro. Not in the app yet.</p></article>
+          </div>
+          <div class="grid-cards" data-l="ar">
+            <article class="card"><div class="card-head"><h2>تحدّث مع بياناتك</h2><span class="badge">مجاني</span></div><p>اكتب سؤالك بالعربية أو الإنجليزية. تأتي الإجابة في جدول، ويمكنك طلب رسم بياني. وتتذكّر أسئلة المتابعة ما سبقها.</p></article>
+            <article class="card"><div class="card-head"><h2>اعرف كيف وصل إلى الإجابة</h2><span class="badge">مجاني</span></div><p>انقر <span class="ui">Thought for…</span> تحت الإجابة لترى كل خطوة والاستعلام الذي نُفّذ.</p></article>
+            <article class="card"><div class="card-head"><h2>أسئلة سريعة</h2><span class="badge">مجاني</span></div><p>احفظ الأسئلة التي تطرحها كثيراً. اكتب <kbd>/</kbd> في المحادثة لتختار واحداً منها، أو انقر زراً سريعاً.</p></article>
+            <article class="card"><div class="card-head"><h2>أسئلة للبدء</h2><span class="badge">مجاني</span></div><p>يكتب الذكاء الاصطناعي أسئلة تبدأ بها من مسردك أنت، فتناسب قاعدة بياناتك.</p></article>
+            <article class="card"><div class="card-head"><h2>رسوم بيانية أساسية</h2><span class="badge">مجاني</span></div><p>أعمدة وخطوط ودوائر.</p></article>
+            <article class="card"><div class="card-head"><h2>مكتبة الرسوم البيانية الكاملة</h2><span class="badge pro">Pro</span></div><p>أعمدة أفقية، ومساحات، وأعمدة مكدّسة، ونقاط مبعثرة، وقمع، وخريطة حرارية، وخريطة شجرية.</p></article>
+            <article class="card"><div class="card-head"><h2>لوحة المعلومات</h2><span class="badge pro">Pro</span></div><p>مربعات بأرقام ورسوم بيانية تتحدّث تلقائياً.</p></article>
+            <article class="card"><div class="card-head"><h2>التصدير إلى CSV</h2><span class="badge">مجاني</span></div><p>زر <span class="ui">Export CSV</span> تحت كل إجابة.</p></article>
+            <article class="card"><div class="card-head"><h2>التصدير إلى Excel</h2><span class="badge pro">Pro</span></div><p>تبقى الأرقام أرقاماً والتواريخ تواريخ، مع ورقة تصف ما سُئل.</p></article>
+            <article class="card"><div class="card-head"><h2>التصدير إلى PDF</h2><span class="badge soon">قريباً</span></div><p>تقارير PDF منسّقة ضمن خطة Pro. ليست في التطبيق بعد.</p></article>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-features-control" aria-labelledby="t-features-control" tabindex="0" data-tab="control">
+        <div class="wrap">
+          <div class="grid-cards" data-l="en">
+            <article class="card"><div class="card-head"><h2>Reads, never writes</h2><span class="badge ok">All plans</span></div><p>The AI may write only one SELECT query. DataPilot checks it before it runs and refuses anything that could change data. For extra safety, connect with a database login that can only read.</p></article>
+            <article class="card"><div class="card-head"><h2>A time limit on every query</h2><span class="badge ok">All plans</span></div><p>A slow question never holds up your database server.</p></article>
+            <article class="card"><div class="card-head"><h2>Data access by role</h2><span class="badge">Free</span></div><p>Choose which role may use each table and column. Hide sensitive tables, such as payroll, from roles that should not see them.</p></article>
+            <article class="card"><div class="card-head"><h2>Users and roles</h2><span class="badge">Free</span></div><p>Everyone signs in with their own account and role: Employee, Admin or Super Admin. Free has up to 3 active user accounts; Pro and Enterprise have no limit.</p></article>
+            <article class="card"><div class="card-head"><h2>Verify page</h2><span class="badge">Free</span></div><p>Keep a list of questions with known answers and run it to see which ones the AI gets right.</p></article>
+            <article class="card"><div class="card-head"><h2>Glossary and business definitions</h2><span class="badge ok">All plans</span></div><p>The AI drafts plain names for your tables and columns, and you correct them. Write down once what your words mean, and every answer follows your rules.</p></article>
+            <article class="card"><div class="card-head"><h2>Audit log</h2><span class="badge ok">All plans</span></div><p>Answers, sign-ins and settings changes are written to an audit log on your side. A screen to search and export it is coming in Enterprise.</p></article>
+            <article class="card"><div class="card-head"><h2>Encrypted on your PC</h2><span class="badge ok">All plans</span></div><p>Passwords and AI keys are stored encrypted on the computer.</p></article>
+          </div>
+          <div class="grid-cards" data-l="ar">
+            <article class="card"><div class="card-head"><h2>يقرأ ولا يكتب أبداً</h2><span class="badge ok">كل الخطط</span></div><p>لا يُسمح للذكاء الاصطناعي إلا بكتابة استعلام SELECT واحد. يفحصه DataPilot قبل تشغيله ويرفض أي شيء قد يغيّر البيانات. ولمزيد من الأمان، اتصل بحساب قاعدة بيانات لا يملك إلا صلاحية القراءة.</p></article>
+            <article class="card"><div class="card-head"><h2>حدّ زمني لكل استعلام</h2><span class="badge ok">كل الخطط</span></div><p>لا يعطّل سؤالٌ بطيء خادمَ قاعدة بياناتك أبداً.</p></article>
+            <article class="card"><div class="card-head"><h2>الوصول إلى البيانات حسب الدور</h2><span class="badge">مجاني</span></div><p>اختر الدور الذي يمكنه استخدام كل جدول وكل عمود. أخفِ الجداول الحساسة، مثل الرواتب، عن الأدوار التي لا يجب أن تراها.</p></article>
+            <article class="card"><div class="card-head"><h2>المستخدمون والأدوار</h2><span class="badge">مجاني</span></div><p>يسجّل كل شخص الدخول بحسابه ودوره: Employee أو Admin أو Super Admin. الخطة المجانية حتى 3 حسابات مستخدمين نشطة، وخطتا Pro وEnterprise بلا حد.</p></article>
+            <article class="card"><div class="card-head"><h2>صفحة التحقق</h2><span class="badge">مجاني</span></div><p>احتفظ بقائمة أسئلة إجاباتها معروفة، وشغّلها لترى أيها يجيب عنه الذكاء الاصطناعي بشكل صحيح.</p></article>
+            <article class="card"><div class="card-head"><h2>المسرد وتعريفات العمل</h2><span class="badge ok">كل الخطط</span></div><p>يكتب الذكاء الاصطناعي مسودة بأسماء واضحة لجداولك وأعمدتك، وأنت تصحّحها. اكتب مرة واحدة ما تعنيه كلماتك، فتتبع كل إجابة قواعدك.</p></article>
+            <article class="card"><div class="card-head"><h2>سجل التدقيق</h2><span class="badge ok">كل الخطط</span></div><p>تُسجَّل الإجابات وعمليات الدخول وتغييرات الإعدادات في سجل تدقيق لديك. وشاشة للبحث فيه وتصديره قادمة في خطة Enterprise.</p></article>
+            <article class="card"><div class="card-head"><h2>مشفّر على جهازك</h2><span class="badge ok">كل الخطط</span></div><p>تُحفظ كلمات المرور ومفاتيح الذكاء الاصطناعي مشفّرةً على الجهاز.</p></article>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-features-data" aria-labelledby="t-features-data" tabindex="0" data-tab="data">
+        <div class="wrap">
+          <div class="grid-cards" data-l="en">
+            <article class="card"><div class="card-head"><h2>SQLite files</h2><span class="badge">Free</span></div><p>Open an SQLite database file directly.</p></article>
+            <article class="card"><div class="card-head"><h2>MySQL and MariaDB</h2><span class="badge">Free</span></div><p>Connect to a MySQL or MariaDB server in your network.</p></article>
+            <article class="card"><div class="card-head"><h2>PostgreSQL and Supabase</h2><span class="badge pro">Pro</span></div><p>Connect to PostgreSQL, including Supabase.</p></article>
+            <article class="card"><div class="card-head"><h2>Several databases</h2><span class="badge pro">Pro</span></div><p>Save several connections and switch between them from the top bar. Each database keeps its own glossary, definitions and tiles.</p></article>
+            <article class="card"><div class="card-head"><h2>Database page</h2><span class="badge pro">Pro</span></div><p>Browse every table, its columns and its rows.</p></article>
+            <article class="card"><div class="card-head"><h2>Your own AI key</h2><span class="badge ok">All plans</span></div><p>Anthropic Claude, OpenAI, Google Gemini, a local model through Ollama, or another OpenAI-compatible service. You pay the AI provider directly; DataPilot adds no AI fees.</p></article>
+            <article class="card"><div class="card-head"><h2>You decide what the AI sees</h2><span class="badge ok">All plans</span></div><p>The AI gets your question and the names of the tables and columns it needs, never whole rows. A switch decides whether it may also see a few sample values.</p></article>
+          </div>
+          <div class="grid-cards" data-l="ar">
+            <article class="card"><div class="card-head"><h2>ملفات SQLite</h2><span class="badge">مجاني</span></div><p>افتح ملف قاعدة بيانات SQLite مباشرةً.</p></article>
+            <article class="card"><div class="card-head"><h2>MySQL وMariaDB</h2><span class="badge">مجاني</span></div><p>اتصل بخادم MySQL أو MariaDB في شبكتك.</p></article>
+            <article class="card"><div class="card-head"><h2>PostgreSQL وSupabase</h2><span class="badge pro">Pro</span></div><p>اتصل بـ PostgreSQL، بما في ذلك Supabase.</p></article>
+            <article class="card"><div class="card-head"><h2>عدة قواعد بيانات</h2><span class="badge pro">Pro</span></div><p>احفظ عدة اتصالات وانتقل بينها من الشريط العلوي. لكل قاعدة بيانات مسردها وتعريفاتها ومربعاتها.</p></article>
+            <article class="card"><div class="card-head"><h2>صفحة قاعدة البيانات</h2><span class="badge pro">Pro</span></div><p>تصفّح كل جدول وأعمدته وصفوفه.</p></article>
+            <article class="card"><div class="card-head"><h2>مفتاح الذكاء الاصطناعي الخاص بك</h2><span class="badge ok">كل الخطط</span></div><p>Anthropic Claude أو OpenAI أو Google Gemini أو نموذج محلي عبر Ollama أو أي خدمة أخرى متوافقة مع OpenAI. تدفع لمزوّد الذكاء الاصطناعي مباشرةً، ولا يضيف DataPilot أي رسوم على الذكاء الاصطناعي.</p></article>
+            <article class="card"><div class="card-head"><h2>أنت تقرّر ما يراه الذكاء الاصطناعي</h2><span class="badge ok">كل الخطط</span></div><p>يحصل الذكاء الاصطناعي على سؤالك وأسماء الجداول والأعمدة التي يحتاجها، ولا يحصل أبداً على صفوف كاملة. ومفتاح تشغيل يحدّد هل يرى أيضاً بعض القيم النموذجية.</p></article>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-features-teams" aria-labelledby="t-features-teams" tabindex="0" data-tab="teams">
+        <div class="wrap">
+          <div data-l="en">
+            <div class="grid-cards">
+              <article class="card"><div class="card-head"><h2>Shared store for teams</h2><span class="badge pro">Pro</span></div><p>Users, definitions, dashboards and the audit log shared by every PC, kept on your own MySQL, MariaDB or PostgreSQL server.</p></article>
+              <article class="card"><div class="card-head"><h2>Web app with sign-in</h2><span class="badge pro">Pro</span></div><p>Run the DataPilot web server in your network, and people sign in from a browser with their own account and rights. The web app has Chat today; more pages are coming. We help you set it up.</p></article>
+              <article class="card"><div class="card-head"><h2>Website chat widget</h2><span class="badge pro">Pro</span></div><p>Put the same chat on a web page or an admin panel with one script line. Pro includes 1 website key; Enterprise has no limit.</p></article>
+              <article class="card"><div class="card-head"><h2>WordPress plugin</h2><span class="badge pro">Pro</span></div><p>Signed-in WordPress users ask through your DataPilot server, each with their own role.</p></article>
+              <article class="card"><div class="card-head"><h2>Setup service</h2><span class="badge ent">Enterprise</span></div><p>Send us a setup file: the names of your tables and columns, never rows. We draft the glossary and the setup questions for your database, and your app installs them.</p></article>
+              <article class="card"><div class="card-head"><h2>Priority support</h2><span class="badge ent">Enterprise</span></div><p>Your questions are answered first.</p></article>
+            </div>
+            <h2 class="section-title">Coming soon in Enterprise</h2>
+            <ul class="checks soon">
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>API for other systems: other software asks questions through it.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>Audit log screen: see, search and export the audit log.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>Scheduled reports: answers sent by email on a schedule.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>Database backups: scheduled backups to a folder you choose.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>Your own branding: your name, logo and colours.</span></li>
+            </ul>
+            <p class="small muted">These are not in the app yet and are not part of what you buy until they are released.</p>
+          </div>
+          <div data-l="ar">
+            <div class="grid-cards">
+              <article class="card"><div class="card-head"><h2>مخزن مشترك للفرق</h2><span class="badge pro">Pro</span></div><p>المستخدمون والتعريفات ولوحات المعلومات وسجل التدقيق مشتركة بين كل الأجهزة، ومحفوظة على خادم MySQL أو MariaDB أو PostgreSQL لديك.</p></article>
+              <article class="card"><div class="card-head"><h2>تطبيق ويب مع تسجيل الدخول</h2><span class="badge pro">Pro</span></div><p>شغّل خادم DataPilot للويب في شبكتك، فيسجّل الأشخاص الدخول من المتصفح بحساباتهم وصلاحياتهم. يضم تطبيق الويب صفحة المحادثة الآن، وصفحات أخرى قادمة. نساعدك في إعداده.</p></article>
+              <article class="card"><div class="card-head"><h2>أداة دردشة للمواقع</h2><span class="badge pro">Pro</span></div><p>ضع المحادثة نفسها في صفحة ويب أو لوحة إدارة بسطر برمجي واحد. تتضمن خطة Pro مفتاح موقع واحداً، وخطة Enterprise بلا حد.</p></article>
+              <article class="card"><div class="card-head"><h2>إضافة WordPress</h2><span class="badge pro">Pro</span></div><p>يسأل مستخدمو WordPress المسجّلون عبر خادم DataPilot لديك، كلٌّ بدوره الخاص.</p></article>
+              <article class="card"><div class="card-head"><h2>خدمة الإعداد</h2><span class="badge ent">Enterprise</span></div><p>أرسل إلينا ملف إعداد: أسماء جداولك وأعمدتك، ولا صفوف أبداً. نكتب مسودة المسرد وأسئلة الإعداد لقاعدة بياناتك، ويثبّتها تطبيقك.</p></article>
+              <article class="card"><div class="card-head"><h2>دعم ذو أولوية</h2><span class="badge ent">Enterprise</span></div><p>نجيب عن أسئلتك أولاً.</p></article>
+            </div>
+            <h2 class="section-title">قريباً في خطة Enterprise</h2>
+            <ul class="checks soon">
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>واجهة برمجية للأنظمة الأخرى: تطرح البرامج الأخرى أسئلتها عبرها.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>شاشة سجل التدقيق: اعرض السجل وابحث فيه وصدّره.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>تقارير مجدولة: إجابات تُرسل بالبريد الإلكتروني وفق جدول.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>نسخ احتياطية لقاعدة البيانات: نسخ مجدولة إلى مجلد تختاره.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>علامتك التجارية: اسمك وشعارك وألوانك.</span></li>
+            </ul>
+            <p class="small muted">هذه الميزات ليست في التطبيق بعد، وليست جزءاً مما تشتريه حتى تصدر.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== HOW IT WORKS ===================== -->
+    <section class="view" id="view-how" data-view="how">
+      <div class="pagehead">
+        <h1 id="h-how" tabindex="-1"><span data-l="en">How it works</span><span data-l="ar">كيف يعمل</span></h1>
+        <div class="tabs" role="tablist" aria-labelledby="h-how">
+          <button type="button" role="tab" class="tab" id="t-how-steps" aria-controls="p-how-steps" aria-selected="true" tabindex="0" data-tab="steps"><span data-l="en">Six steps</span><span data-l="ar">ست خطوات</span></button>
+          <button type="button" role="tab" class="tab" id="t-how-data" aria-controls="p-how-data" aria-selected="false" tabindex="-1" data-tab="data"><span data-l="en">Where your data goes</span><span data-l="ar">أين تذهب بياناتك</span></button>
+        </div>
+      </div>
+
+      <div class="panel on" role="tabpanel" id="p-how-steps" aria-labelledby="t-how-steps" tabindex="0" data-tab="steps">
+        <div class="narrow">
+          <ol class="steps" data-l="en">
+            <li><div class="card"><h2>Install</h2><p>Download the installer and run it. No administrator password is needed. The app starts with a small demo database with made-up data, so you can try it at once.</p></div></li>
+            <li><div class="card"><h2>Connect your database</h2><p>In <span class="ui">Settings &gt; Connection</span>, choose SQLite, MySQL, MariaDB or PostgreSQL, enter the details and click <span class="ui">Test connection</span>. Safest: a database login that can only read.</p></div></li>
+            <li><div class="card"><h2>Choose your AI</h2><p>In <span class="ui">Settings &gt; AI Provider</span>, choose Claude, OpenAI, Gemini or a local model, and paste your own key. It is stored encrypted on your PC.</p></div></li>
+            <li><div class="card"><h2>Teach it your words</h2><p>Click <span class="ui">Draft with AI…</span> in the glossary: DataPilot suggests plain names for your tables and columns, and you correct them. Add your business definitions. With Enterprise, we draft this for you.</p></div></li>
+            <li><div class="card"><h2>Add your people</h2><p>Create an account for each person, give each a role, and choose which tables and columns each role may see.</p></div></li>
+            <li><div class="card"><h2>Ask</h2><p>Type a question. Read the table, ask for a chart, check the steps under <span class="ui">Thought for…</span>, and export to CSV or Excel.</p></div></li>
+          </ol>
+          <ol class="steps" data-l="ar">
+            <li><div class="card"><h2>ثبّت التطبيق</h2><p>نزّل ملف التثبيت وشغّله. لا تحتاج إلى كلمة مرور المسؤول. يبدأ التطبيق بقاعدة بيانات تجريبية صغيرة ببيانات وهمية لتجرّبه فوراً.</p></div></li>
+            <li><div class="card"><h2>اربط قاعدة بياناتك</h2><p>في <span class="ui">Settings &gt; Connection</span> اختر SQLite أو MySQL أو MariaDB أو PostgreSQL، وأدخل البيانات، وانقر <span class="ui">Test connection</span>. الأكثر أماناً: حساب قاعدة بيانات لا يملك إلا صلاحية القراءة.</p></div></li>
+            <li><div class="card"><h2>اختر الذكاء الاصطناعي</h2><p>في <span class="ui">Settings &gt; AI Provider</span> اختر Claude أو OpenAI أو Gemini أو نموذجاً محلياً، والصق مفتاحك الخاص. يُحفظ المفتاح مشفّراً على جهازك.</p></div></li>
+            <li><div class="card"><h2>علّمه كلماتك</h2><p>انقر <span class="ui">Draft with AI…</span> في المسرد: يقترح DataPilot أسماء واضحة لجداولك وأعمدتك، وأنت تصحّحها. ثم أضف تعريفات العمل لديك. مع خطة Enterprise نكتب هذه المسودة لك.</p></div></li>
+            <li><div class="card"><h2>أضف فريقك</h2><p>أنشئ حساباً لكل شخص، وامنح كلاً منهم دوراً، واختر الجداول والأعمدة التي يراها كل دور.</p></div></li>
+            <li><div class="card"><h2>اسأل</h2><p>اكتب سؤالك. اقرأ الجدول، واطلب رسماً بيانياً، وراجع الخطوات تحت <span class="ui">Thought for…</span>، وصدّر النتيجة إلى CSV أو Excel.</p></div></li>
+          </ol>
+          <div class="row" style="margin-top:20px">
+            <a class="btn primary" data-dl href="https://github.com/hasanradi93/datapilot/releases/latest/download/DataPilotAI-Setup.exe"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-download"/></svg><span data-l="en">Download free</span><span data-l="ar">نزّله مجاناً</span></a>
+            <a class="btn" href="#download/guide"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-book"/></svg><span data-l="en">Read the install guide</span><span data-l="ar">اقرأ دليل التثبيت</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-how-data" aria-labelledby="t-how-data" tabindex="0" data-tab="data">
+        <div class="wrap">
+          <div data-l="en">
+            <p class="lead">DataPilot runs on your PC and talks to two things: your database and the AI you chose. We are not in the middle.</p>
+            <div class="flow">
+              <div class="card"><h2>Stays on your PC and network</h2><ul>
+                <li>Your database and every row in it.</li>
+                <li>The app's accounts, passwords and AI keys, encrypted.</li>
+                <li>Your settings, glossary, definitions and audit log.</li>
+                <li>The answers your people see.</li></ul></div>
+              <div class="card ai"><h2>Goes to the AI you chose, with your key</h2><ul>
+                <li>Your question and the earlier questions of the same chat.</li>
+                <li>The names of the tables and columns it may need, with their glossary names, and your business definitions.</li>
+                <li>A few sample values from text columns, only while the <span class="ui">Send sample values</span> switch is on.</li>
+                <li>If a query fails: the query and the database's error message.</li>
+                <li>Never whole rows, passwords or the app's user names.</li></ul>
+                <p class="small muted" style="margin-top:8px">With a local model (Ollama), this stays in your network too.</p></div>
+              <div class="card us"><h2>Goes to us, only if you choose</h2><ul>
+                <li>Nothing, unless your Super Admin connects the app to a DataPilot account.</li>
+                <li>Then: a setup file when you send it (names of tables and columns, never rows), licence and update checks, and a daily count of questions if you switch it on.</li>
+                <li>Never your questions, rows of data, passwords or users.</li></ul></div>
+            </div>
+            <p style="margin-top:18px"><a href="#privacy">Read the privacy policy</a> for the full list.</p>
+          </div>
+          <div data-l="ar">
+            <p class="lead">يعمل DataPilot على جهازك ويتواصل مع جهتين فقط: قاعدة بياناتك والذكاء الاصطناعي الذي اخترته. لسنا وسيطاً بينهما.</p>
+            <div class="flow">
+              <div class="card"><h2>يبقى على جهازك وفي شبكتك</h2><ul>
+                <li>قاعدة بياناتك وكل صف فيها.</li>
+                <li>حسابات التطبيق وكلمات المرور ومفاتيح الذكاء الاصطناعي، مشفّرة.</li>
+                <li>إعداداتك ومسردك وتعريفاتك وسجل التدقيق.</li>
+                <li>الإجابات التي يراها فريقك.</li></ul></div>
+              <div class="card ai"><h2>يذهب إلى الذكاء الاصطناعي الذي اخترته، بمفتاحك</h2><ul>
+                <li>سؤالك والأسئلة السابقة في المحادثة نفسها.</li>
+                <li>أسماء الجداول والأعمدة التي قد يحتاجها مع أسمائها في المسرد، وتعريفات العمل لديك.</li>
+                <li>بعض القيم النموذجية من الأعمدة النصية، فقط ما دام مفتاح <span class="ui">Send sample values</span> مفعّلاً.</li>
+                <li>إذا فشل استعلام: الاستعلام ورسالة الخطأ من قاعدة البيانات.</li>
+                <li>لا صفوف كاملة ولا كلمات مرور ولا أسماء مستخدمي التطبيق أبداً.</li></ul>
+                <p class="small muted" style="margin-top:8px">مع نموذج محلي (Ollama) يبقى هذا أيضاً داخل شبكتك.</p></div>
+              <div class="card us"><h2>يصل إلينا، فقط إذا اخترت ذلك</h2><ul>
+                <li>لا شيء، ما لم يربط الـ Super Admin التطبيق بحساب DataPilot.</li>
+                <li>عندها: ملف إعداد عندما ترسله (أسماء الجداول والأعمدة، ولا صفوف أبداً)، وفحص التراخيص والتحديثات، وعدد يومي للأسئلة إذا فعّلته.</li>
+                <li>لا أسئلتك ولا صفوف بياناتك ولا كلمات المرور ولا المستخدمون أبداً.</li></ul></div>
+            </div>
+            <p style="margin-top:18px"><a href="#privacy">اقرأ سياسة الخصوصية</a> للاطلاع على القائمة الكاملة.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PRICING ===================== -->
+    <section class="view" id="view-pricing" data-view="pricing">
+      <div class="pagehead">
+        <h1 id="h-pricing" tabindex="-1"><span data-l="en">Pricing</span><span data-l="ar">الأسعار</span></h1>
+        <div class="tabs" role="tablist" aria-labelledby="h-pricing">
+          <button type="button" role="tab" class="tab" id="t-pricing-plans" aria-controls="p-pricing-plans" aria-selected="true" tabindex="0" data-tab="plans"><span data-l="en">Plans</span><span data-l="ar">الخطط</span></button>
+          <button type="button" role="tab" class="tab" id="t-pricing-compare" aria-controls="p-pricing-compare" aria-selected="false" tabindex="-1" data-tab="compare"><span data-l="en">Compare plans</span><span data-l="ar">قارن بين الخطط</span></button>
+        </div>
+      </div>
+
+      <div class="panel on" role="tabpanel" id="p-pricing-plans" aria-labelledby="t-pricing-plans" tabindex="0" data-tab="plans">
+        <div class="wrap">
+          <fieldset class="billing" id="billing">
+            <legend><span data-l="en">Billing period</span><span data-l="ar">فترة الدفع</span></legend>
+            <label><input type="radio" name="billing" value="monthly" checked><span data-l="en">Monthly</span><span data-l="ar">شهري</span></label>
+            <label><input type="radio" name="billing" value="yearly"><span data-l="en">Yearly</span><span data-l="ar">سنوي</span><span class="badge ok"><span data-l="en">2 months free</span><span data-l="ar">شهران مجاناً</span></span></label>
+          </fieldset>
+          <div class="plans" id="plans">
+            <p class="muted"><span data-l="en">Loading prices…</span><span data-l="ar">جارٍ تحميل الأسعار…</span></p>
+          </div>
+          <div class="plan-notes">
+            <p><span data-l="en">Prices are in US dollars, per company: one installation and all its users.</span><span data-l="ar">الأسعار بالدولار الأمريكي، لكل شركة: تثبيت واحد وجميع مستخدميه.</span></p>
+            <p><span data-l="en">Payment is handled by Paddle, our Merchant of Record, which adds sales tax or VAT where it applies.</span><span data-l="ar">تتولى Paddle، التاجر المسجّل لطلباتنا، معالجة الدفع، وتضيف ضريبة المبيعات أو ضريبة القيمة المضافة حيث تنطبق.</span></p>
+            <p><span data-l="en">14-day money-back guarantee on your first payment. <a href="#refunds">Refund policy</a>.</span><span data-l="ar">ضمان استرداد المال خلال 14 يوماً على دفعتك الأولى. <a href="#refunds">سياسة الاسترداد</a>.</span></p>
+            <p><span data-l="en">Your AI provider bills you separately for AI use. Gemini has a free plan with limits, and a local model costs nothing.</span><span data-l="ar">يحاسبك مزوّد الذكاء الاصطناعي بشكل منفصل على استخدامه. لدى Gemini خطة مجانية بحدود، والنموذج المحلي بلا تكلفة.</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-pricing-compare" aria-labelledby="t-pricing-compare" tabindex="0" data-tab="compare">
+        <div class="wrap" id="compare">
+          <p class="muted"><span data-l="en">Loading prices…</span><span data-l="ar">جارٍ تحميل الأسعار…</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== DOWNLOAD ===================== -->
+    <section class="view" id="view-download" data-view="download">
+      <div class="pagehead">
+        <h1 id="h-download" tabindex="-1"><span data-l="en">Download</span><span data-l="ar">التنزيل</span></h1>
+        <div class="tabs" role="tablist" aria-labelledby="h-download">
+          <button type="button" role="tab" class="tab" id="t-download-get" aria-controls="p-download-get" aria-selected="true" tabindex="0" data-tab="get"><span data-l="en">Installer</span><span data-l="ar">ملف التثبيت</span></button>
+          <button type="button" role="tab" class="tab" id="t-download-guide" aria-controls="p-download-guide" aria-selected="false" tabindex="-1" data-tab="guide"><span data-l="en">Install guide</span><span data-l="ar">دليل التثبيت</span></button>
+        </div>
+      </div>
+
+      <div class="panel on" role="tabpanel" id="p-download-get" aria-labelledby="t-download-get" tabindex="0" data-tab="get">
+        <div class="wrap dl">
+          <div class="card main-dl">
+            <div class="dl-file">
+              <span class="mark" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-logo"/></svg></span>
+              <div>
+                <h2><span data-l="en">DataPilot AI for Windows</span><span data-l="ar">DataPilot AI لنظام Windows</span></h2>
+                <p class="small muted" style="margin:0"><span data-l="en">Version <span data-version>0.3.0</span> · Windows 10 and 11, 64-bit · about 190 MB</span><span data-l="ar">الإصدار <span data-version class="ltr">0.3.0</span> · Windows 10 و11 بنظام 64 بت · نحو 190 ميغابايت</span></p>
+              </div>
+            </div>
+            <a class="btn primary big" data-dl href="https://github.com/hasanradi93/datapilot/releases/latest/download/DataPilotAI-Setup.exe"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-download"/></svg><span data-l="en">Download the installer</span><span data-l="ar">نزّل ملف التثبيت</span></a>
+            <p><span data-l="en">One installer for every plan. Without a licence it runs as Free (up to 3 users). A licence file from us turns on Pro or Enterprise.</span><span data-l="ar">ملف تثبيت واحد لكل الخطط. بلا ترخيص يعمل بالخطة المجانية (حتى 3 مستخدمين). وملف ترخيص منّا يفعّل خطة Pro أو Enterprise.</span></p>
+            <div class="note" role="note">
+              <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-warn"/></svg>
+              <div data-l="en">
+                <p><strong>Windows may warn you.</strong> The installer is not signed yet, so Windows SmartScreen can show "Windows protected your PC".</p>
+                <p>Click <span class="ui">More info</span>, then <span class="ui">Run anyway</span>. We will sign the installer in a later version.</p>
+              </div>
+              <div data-l="ar">
+                <p><strong>قد يظهر لك تحذير من Windows.</strong> ملف التثبيت غير موقّع بعد، لذلك قد يعرض Windows SmartScreen رسالة «Windows protected your PC» (حماية Windows لجهاز الكمبيوتر).</p>
+                <p>انقر <span class="ui">More info</span> (مزيد من المعلومات)، ثم <span class="ui">Run anyway</span> (تشغيل على أي حال). سنوقّع ملف التثبيت في إصدار لاحق.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2><span data-l="en">System requirements</span><span data-l="ar">متطلبات النظام</span></h2>
+            <ul class="checks" data-l="en" style="margin-top:10px">
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Windows 10 or Windows 11, 64-bit.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>About 700 MB of free disk space.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>No administrator password: it installs for the current Windows user.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>A database the PC can reach: an SQLite file, MySQL or MariaDB; PostgreSQL or Supabase with Pro.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>An AI: a key from Anthropic, OpenAI or Google (Gemini has a free plan with limits), or a local model with Ollama.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Internet access to reach your AI provider. Not needed with a local model.</span></li>
+            </ul>
+            <ul class="checks" data-l="ar" style="margin-top:10px">
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Windows 10 أو Windows 11 بنظام 64 بت.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>نحو 700 ميغابايت من المساحة الفارغة على القرص.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>لا حاجة إلى كلمة مرور المسؤول: يُثبَّت لمستخدم Windows الحالي.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>قاعدة بيانات يصل إليها الجهاز: ملف SQLite أو MySQL أو MariaDB، وPostgreSQL أو Supabase مع خطة Pro.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>ذكاء اصطناعي: مفتاح من Anthropic أو OpenAI أو Google (لدى Gemini خطة مجانية بحدود)، أو نموذج محلي عبر Ollama.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>اتصال بالإنترنت للوصول إلى مزوّد الذكاء الاصطناعي، ولا حاجة إليه مع النموذج المحلي.</span></li>
+            </ul>
+            <p style="margin-top:14px"><a href="#download/guide"><span data-l="en">Read the install guide</span><span data-l="ar">اقرأ دليل التثبيت</span></a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-download-guide" aria-labelledby="t-download-guide" tabindex="0" data-tab="guide">
+        <article class="narrow guide" data-l="en">
+          <p class="lead">Ask questions about your company database in plain English or in Arabic, and get tables and charts back. DataPilot only reads your data. It can never change or delete it.</p>
+          <h2>1. Install</h2>
+          <ul>
+            <li>Double-click the DataPilot AI setup file. Click <span class="ui">Next</span>, then <span class="ui">Install</span>. You do not need an administrator password.</li>
+            <li>If Windows shows "Windows protected your PC", click <span class="ui">More info</span>, then <span class="ui">Run anyway</span>. We will sign the installer in a later version.</li>
+            <li>Start it from the desktop shortcut or the Start menu: "DataPilot AI".</li>
+          </ul>
+          <h2>2. First start: create the Super Admin</h2>
+          <ul>
+            <li>The first time, the app asks you to create an account. You become the Super Admin of this installation.</li>
+            <li>Choose a long password and keep it safe.</li>
+            <li>The app then shows you a recovery code. Write it down and keep it in a safe place. It is shown only once. If you forget your password, click <span class="ui">Forgot password?</span> on the sign-in window, then enter your user name, the recovery code and a new password. The code works once.</li>
+            <li>To make a new code later (the old one stops working), open Profile and click <span class="ui">Create a recovery code...</span>.</li>
+            <li>To leave the app, click <span class="ui">Sign out</span> at the bottom of the left bar.</li>
+          </ul>
+          <h2>3. Connect your database</h2>
+          <ul>
+            <li>Until you connect your own database, the app starts on a small demo database with made-up data, so you can try it. Connecting your own database, below, replaces it.</li>
+            <li>Safest: ask the person who manages your database server for a read-only login. Here is an example for MariaDB or MySQL:
+<pre>CREATE USER 'datapilot_reader'@'%' IDENTIFIED BY 'a-strong-password';
+GRANT SELECT ON your_database.* TO 'datapilot_reader'@'%';</pre></li>
+            <li>In the app, open <span class="ui">Settings &gt; Connection</span>. Choose your database type and fill in the host, the port, the database name, the user and the password. Click <span class="ui">Test connection</span>, then <span class="ui">Save</span>.</li>
+            <li>The first question after connecting reads the list of your tables. With hundreds of tables this takes a few seconds, once.</li>
+            <li>Every query has a time limit, so your server is never held up.</li>
+          </ul>
+          <h2>4. Choose the AI and add its key</h2>
+          <ul>
+            <li>Open <span class="ui">Settings &gt; AI Provider</span> and choose a provider: Google Gemini, OpenAI, Anthropic Claude, or another one on the list.</li>
+            <li>Get a key from your provider's website, paste it into the key box, click <span class="ui">Test provider</span>, then <span class="ui">Save</span>. Gemini has a free plan, with limits per minute and per day. If the app says the AI is busy, wait a minute.</li>
+            <li>The key is stored encrypted on this computer.</li>
+          </ul>
+          <h2>5. Draft the glossary</h2>
+          <p>Your tables and columns may have short or technical names. The glossary gives them plain names, so questions and answers make sense.</p>
+          <ul>
+            <li>Open <span class="ui">Settings &gt; Glossary</span> and click <span class="ui">Draft with AI...</span>. Read the draft, fix any name that is wrong, and save.</li>
+            <li><span class="ui">Settings &gt; Business definitions</span> holds your own rules for the words your company uses (what counts, and what does not). Answer the setup questions once and every answer follows your rules. Under each answer, "Using your definition of..." shows which rules were used.</li>
+          </ul>
+          <h2>6. Add your colleagues</h2>
+          <ul>
+            <li>Open <span class="ui">Settings &gt; Users</span> and click <span class="ui">Add user</span>. Give each person a role. Give people only the access they need.</li>
+            <li><span class="ui">Settings &gt; Data access</span> lets you hide sensitive tables from some roles.</li>
+          </ul>
+          <h2>7. Ask questions</h2>
+          <ul>
+            <li>Open Chat and type a question in English or in Arabic. Example: "How many records were added last month?"</li>
+            <li>Answers come as a table, and you can ask for a chart.</li>
+            <li>Click <span class="ui">Thought for...</span> under an answer to see how the app got it.</li>
+          </ul>
+          <h2>8. Where things are kept</h2>
+          <ul>
+            <li>Accounts, passwords and keys: <code>%APPDATA%\DataPilotAI</code> on this computer (passwords and keys are encrypted).</li>
+            <li>Settings: <code>config.yaml</code> in the program folder, <code>%LOCALAPPDATA%\Programs\DataPilot AI</code>.</li>
+            <li>Logs: the file <code>datapilot.log</code> in the logs folder inside the program folder. To open that folder, click <span class="ui">About</span> in the left bar, then <span class="ui">Open log folder</span>. Send this file to us when something goes wrong.</li>
+            <li>Exports (Excel, CSV and the setup file): the save window starts in <code>Documents\DataPilot</code>, or in the folder you used last. When a file is saved, a box offers <span class="ui">Open</span> and <span class="ui">Show in folder</span>.</li>
+            <li>What goes to the AI: your question, the names of your tables and columns, and a few example values from columns that have only a handful of different values (like a status). Your data rows are not sent to it.</li>
+            <li>To remove the app: Windows <span class="ui">Settings &gt; Apps &gt; DataPilot AI &gt; Uninstall</span>. To also remove accounts, delete <code>%APPDATA%\DataPilotAI</code>.</li>
+            <li>This guide is also in the Start menu: "DataPilot AI - Read me first".</li>
+          </ul>
+          <h2>9. Licence</h2>
+          <p>Without a licence the app runs on the Free plan (Chat, tables, basic charts). If you received a licence file: <span class="ui">Settings &gt; Features &amp; licence &gt; Install licence...</span></p>
+          <h2>Need help?</h2>
+          <p>Email us at <a data-mail="text" href="mailto:hassan93radi@gmail.com">hassan93radi@gmail.com</a>. Send a screenshot of the question and the answer, with <span class="ui">Thought for...</span> opened. It shows exactly what the app did.</p>
+        </article>
+
+        <article class="narrow guide" data-l="ar">
+          <p class="lead">اطرح أسئلة عن قاعدة بيانات شركتك بالعربية أو بالإنجليزية البسيطة، واحصل على جداول ورسوم بيانية. DataPilot يقرأ بياناتك فقط، ولا يمكنه أبداً تغييرها أو حذفها.</p>
+          <p class="small muted">شاشات تطبيق سطح المكتب بالإنجليزية حالياً، لذلك تظهر أسماء الأزرار والصفحات هنا كما تراها في التطبيق.</p>
+          <h2>1. التثبيت</h2>
+          <ul>
+            <li>انقر نقراً مزدوجاً على ملف تثبيت DataPilot AI. انقر <span class="ui">Next</span> ثم <span class="ui">Install</span>. لا تحتاج إلى كلمة مرور المسؤول.</li>
+            <li>إذا عرض Windows رسالة «Windows protected your PC»، فانقر <span class="ui">More info</span> ثم <span class="ui">Run anyway</span>. سنوقّع ملف التثبيت في إصدار لاحق.</li>
+            <li>شغّل التطبيق من الاختصار على سطح المكتب أو من قائمة Start: «DataPilot AI».</li>
+          </ul>
+          <h2>2. أول تشغيل: أنشئ حساب Super Admin</h2>
+          <ul>
+            <li>في المرة الأولى يطلب منك التطبيق إنشاء حساب، فتصبح الـ Super Admin لهذا التثبيت.</li>
+            <li>اختر كلمة مرور طويلة واحفظها في مكان آمن.</li>
+            <li>يعرض لك التطبيق بعد ذلك رمز استرداد. دوّنه واحفظه في مكان آمن، فهو يظهر مرة واحدة فقط. إذا نسيت كلمة المرور، فانقر <span class="ui">Forgot password?</span> في نافذة تسجيل الدخول، ثم أدخل اسم المستخدم ورمز الاسترداد وكلمة مرور جديدة. يعمل الرمز مرة واحدة.</li>
+            <li>لإنشاء رمز جديد لاحقاً (ويتوقف القديم عن العمل)، افتح Profile وانقر <span class="ui">Create a recovery code...</span>.</li>
+            <li>للخروج من التطبيق، انقر <span class="ui">Sign out</span> أسفل الشريط الجانبي.</li>
+          </ul>
+          <h2>3. اربط قاعدة بياناتك</h2>
+          <ul>
+            <li>إلى أن تربط قاعدة بياناتك، يبدأ التطبيق بقاعدة بيانات تجريبية صغيرة ببيانات وهمية لتجرّبه. ربط قاعدة بياناتك كما يلي يحلّ محلها.</li>
+            <li>الأكثر أماناً: اطلب من مسؤول خادم قاعدة البيانات حساباً للقراءة فقط. هذا مثال لـ MariaDB أو MySQL:
+<pre>CREATE USER 'datapilot_reader'@'%' IDENTIFIED BY 'a-strong-password';
+GRANT SELECT ON your_database.* TO 'datapilot_reader'@'%';</pre></li>
+            <li>في التطبيق، افتح <span class="ui">Settings &gt; Connection</span>. اختر نوع قاعدة البيانات، وأدخل الخادم والمنفذ واسم قاعدة البيانات والمستخدم وكلمة المرور. انقر <span class="ui">Test connection</span> ثم <span class="ui">Save</span>.</li>
+            <li>أول سؤال بعد الربط يقرأ قائمة جداولك. مع مئات الجداول يستغرق ذلك بضع ثوانٍ، مرة واحدة.</li>
+            <li>لكل استعلام حدّ زمني، فلا يتعطّل خادمك أبداً.</li>
+          </ul>
+          <h2>4. اختر الذكاء الاصطناعي وأضف مفتاحه</h2>
+          <ul>
+            <li>افتح <span class="ui">Settings &gt; AI Provider</span> واختر مزوّداً: Google Gemini أو OpenAI أو Anthropic Claude أو غيرها من القائمة.</li>
+            <li>احصل على مفتاح من موقع المزوّد، والصقه في خانة المفتاح، وانقر <span class="ui">Test provider</span> ثم <span class="ui">Save</span>. لدى Gemini خطة مجانية بحدود لكل دقيقة ولكل يوم. إذا قال التطبيق إن الذكاء الاصطناعي مشغول، فانتظر دقيقة.</li>
+            <li>يُحفظ المفتاح مشفّراً على هذا الجهاز.</li>
+          </ul>
+          <h2>5. اكتب مسودة المسرد</h2>
+          <p>قد تحمل جداولك وأعمدتك أسماء قصيرة أو تقنية. المسرد يمنحها أسماء واضحة، فتصبح الأسئلة والإجابات مفهومة.</p>
+          <ul>
+            <li>افتح <span class="ui">Settings &gt; Glossary</span> وانقر <span class="ui">Draft with AI...</span>. اقرأ المسودة، وصحّح أي اسم خاطئ، ثم احفظ.</li>
+            <li>في <span class="ui">Settings &gt; Business definitions</span> قواعدك أنت للكلمات التي تستخدمها شركتك (ما يُحتسب وما لا يُحتسب). أجب عن أسئلة الإعداد مرة واحدة، فتتبع كل إجابة قواعدك. وتحت كل إجابة تبيّن عبارة «Using your definition of...» القواعد التي استُخدمت.</li>
+          </ul>
+          <h2>6. أضف زملاءك</h2>
+          <ul>
+            <li>افتح <span class="ui">Settings &gt; Users</span> وانقر <span class="ui">Add user</span>. امنح كل شخص دوراً، ولا تعطِ أحداً إلا الصلاحيات التي يحتاجها.</li>
+            <li>تتيح لك <span class="ui">Settings &gt; Data access</span> إخفاء الجداول الحساسة عن بعض الأدوار.</li>
+          </ul>
+          <h2>7. اطرح أسئلتك</h2>
+          <ul>
+            <li>افتح Chat واكتب سؤالاً بالعربية أو الإنجليزية. مثال: «كم سجلاً أُضيف في الشهر الماضي؟»</li>
+            <li>تأتي الإجابات في جدول، ويمكنك طلب رسم بياني.</li>
+            <li>انقر <span class="ui">Thought for...</span> تحت الإجابة لترى كيف توصّل إليها التطبيق.</li>
+          </ul>
+          <h2>8. أين تُحفظ الأشياء</h2>
+          <ul>
+            <li>الحسابات وكلمات المرور والمفاتيح: <code>%APPDATA%\DataPilotAI</code> على هذا الجهاز (كلمات المرور والمفاتيح مشفّرة).</li>
+            <li>الإعدادات: <code>config.yaml</code> في مجلد البرنامج <code>%LOCALAPPDATA%\Programs\DataPilot AI</code>.</li>
+            <li>السجلات: ملف <code>datapilot.log</code> في مجلد logs داخل مجلد البرنامج. لفتح هذا المجلد انقر <span class="ui">About</span> في الشريط الجانبي، ثم <span class="ui">Open log folder</span>. أرسل إلينا هذا الملف عندما يحدث خطأ.</li>
+            <li>الملفات المصدّرة (Excel وCSV وملف الإعداد): تبدأ نافذة الحفظ في <code>Documents\DataPilot</code> أو في آخر مجلد استخدمته. عند حفظ ملف يعرض مربع الزرين <span class="ui">Open</span> و<span class="ui">Show in folder</span>.</li>
+            <li>ما يُرسل إلى الذكاء الاصطناعي: سؤالك، وأسماء جداولك وأعمدتك، وبعض القيم النموذجية من الأعمدة التي لا تحوي إلا عدداً قليلاً من القيم المختلفة (مثل الحالة). لا تُرسل إليه صفوف بياناتك.</li>
+            <li>لإزالة التطبيق: في Windows افتح <span class="ui">Settings &gt; Apps &gt; DataPilot AI &gt; Uninstall</span>. ولإزالة الحسابات أيضاً، احذف <code>%APPDATA%\DataPilotAI</code>.</li>
+            <li>هذا الدليل موجود أيضاً في قائمة Start: «DataPilot AI - Read me first».</li>
+          </ul>
+          <h2>9. الترخيص</h2>
+          <p>بلا ترخيص يعمل التطبيق بالخطة المجانية (المحادثة والجداول والرسوم البيانية الأساسية). إذا وصلك ملف ترخيص: <span class="ui">Settings &gt; Features &amp; licence &gt; Install licence...</span></p>
+          <h2>تحتاج إلى مساعدة؟</h2>
+          <p>راسلنا على <a data-mail="text" href="mailto:hassan93radi@gmail.com" class="ltr">hassan93radi@gmail.com</a>. أرسل صورة للشاشة تُظهر السؤال والإجابة مع فتح <span class="ui">Thought for...</span>، فهي تبيّن بالضبط ما فعله التطبيق.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== FAQ ===================== -->
+    <section class="view" id="view-faq" data-view="faq">
+      <div class="pagehead">
+        <h1 id="h-faq" tabindex="-1"><span data-l="en">Questions and answers</span><span data-l="ar">الأسئلة الشائعة</span></h1>
+        <div class="tabs" role="tablist" aria-labelledby="h-faq">
+          <button type="button" role="tab" class="tab" id="t-faq-general" aria-controls="p-faq-general" aria-selected="true" tabindex="0" data-tab="general"><span data-l="en">General</span><span data-l="ar">عامة</span></button>
+          <button type="button" role="tab" class="tab" id="t-faq-privacy" aria-controls="p-faq-privacy" aria-selected="false" tabindex="-1" data-tab="privacy"><span data-l="en">Data and privacy</span><span data-l="ar">البيانات والخصوصية</span></button>
+          <button type="button" role="tab" class="tab" id="t-faq-buying" aria-controls="p-faq-buying" aria-selected="false" tabindex="-1" data-tab="buying"><span data-l="en">Buying</span><span data-l="ar">الشراء</span></button>
+        </div>
+      </div>
+
+      <div class="panel on" role="tabpanel" id="p-faq-general" aria-labelledby="t-faq-general" tabindex="0" data-tab="general">
+        <div class="narrow faq" data-l="en">
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>Which databases does DataPilot work with?</summary><div class="ans"><p>SQLite files, MySQL and MariaDB on every plan; PostgreSQL and Supabase with Pro. It works with any kind of company database, whatever the business: it learns your tables from your own schema, glossary and definitions.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>Do I need to know SQL?</summary><div class="ans"><p>No. You ask in plain words and the AI writes the query. If you want to see it, click <span class="ui">Thought for…</span> under the answer.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>Can I ask in Arabic?</summary><div class="ans"><p>Yes. Ask in Arabic or English, and the answer's sentences follow the language you asked in. The desktop app's screens are in English today; the web app (Pro) has Arabic screens too.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>Which AI does it use?</summary><div class="ans"><p>The one you choose: Anthropic Claude, OpenAI, Google Gemini, a local model through Ollama, or another OpenAI-compatible service. You use your own key and pay your provider directly.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>Are the answers always right?</summary><div class="ans"><p>Not always: an AI can misread a question. DataPilot helps you check. <span class="ui">Thought for…</span> shows the steps and the query, the Verify page tests the AI against questions with known answers, and business definitions make your words mean what they mean in your company.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>Does it run on a Mac or on Linux?</summary><div class="ans"><p>The desktop app is for Windows 10 and 11, 64-bit. With Pro, people can also use the web app from any modern browser, served by the DataPilot web server in your network.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>Does the same company make other tools?</summary><div class="ans"><p>Yes. The same company, <a href="https://hasanradi93.github.io/razov-db/">RAZOV.tech solutions</a>, also makes SQLNext (moves MySQL databases to newer versions) and <a href="https://hasanradi93.github.io/razov-db/schemazone/">SchemaZone</a> (design a database visually and import a .sql file in your browser).</p></div></details>
+        </div>
+        <div class="narrow faq" data-l="ar">
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>ما قواعد البيانات التي يعمل معها DataPilot؟</summary><div class="ans"><p>ملفات SQLite وMySQL وMariaDB في كل الخطط، وPostgreSQL وSupabase مع خطة Pro. ويعمل مع أي نوع من قواعد بيانات الشركات مهما كان نشاطها: فهو يتعرّف على جداولك من بنية قاعدة بياناتك ومسردك وتعريفاتك.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>هل أحتاج إلى معرفة SQL؟</summary><div class="ans"><p>لا. تسأل بكلمات بسيطة والذكاء الاصطناعي يكتب الاستعلام. وإن أردت رؤيته فانقر <span class="ui">Thought for…</span> تحت الإجابة.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>هل يمكنني السؤال بالعربية؟</summary><div class="ans"><p>نعم. اسأل بالعربية أو الإنجليزية، وتأتي جمل الإجابة بلغة سؤالك. شاشات تطبيق سطح المكتب بالإنجليزية حالياً، أما تطبيق الويب (Pro) ففيه شاشات بالعربية أيضاً.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>أي ذكاء اصطناعي يستخدم؟</summary><div class="ans"><p>الذي تختاره أنت: Anthropic Claude أو OpenAI أو Google Gemini أو نموذج محلي عبر Ollama أو أي خدمة أخرى متوافقة مع OpenAI. تستخدم مفتاحك الخاص وتدفع لمزوّدك مباشرةً.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>هل الإجابات صحيحة دائماً؟</summary><div class="ans"><p>ليس دائماً، فقد يسيء الذكاء الاصطناعي فهم سؤال. يساعدك DataPilot على التحقق: يعرض <span class="ui">Thought for…</span> الخطوات والاستعلام، وتختبر صفحة التحقق الذكاء الاصطناعي بأسئلة إجاباتها معروفة، وتجعل تعريفات العمل كلماتك تعني ما تعنيه في شركتك.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>هل يعمل على Mac أو Linux؟</summary><div class="ans"><p>تطبيق سطح المكتب مخصّص لـ Windows 10 و11 بنظام 64 بت. ومع خطة Pro يمكن استخدام تطبيق الويب من أي متصفح حديث، يقدّمه خادم DataPilot في شبكتك.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>هل تقدّم الشركة نفسها أدوات أخرى؟</summary><div class="ans"><p>نعم. الشركة نفسها، <a href="https://hasanradi93.github.io/razov-db/">حلول RAZOV.tech</a>، تصنع أيضاً SQLNext (ينقل قواعد بيانات MySQL إلى إصدارات أحدث) و<a href="https://hasanradi93.github.io/razov-db/schemazone/">SchemaZone</a> (صمّم قاعدة بيانات بشكل مرئي واستورد ملف <bdi>.sql</bdi> في متصفحك).</p></div></details>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-faq-privacy" aria-labelledby="t-faq-privacy" tabindex="0" data-tab="privacy">
+        <div class="narrow faq" data-l="en">
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>Can DataPilot change or delete my data?</summary><div class="ans"><p>No. The AI may write only a read-only query, and DataPilot checks every query before it runs and refuses anything else. We also advise a database login that can only read, so your database server enforces it too.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>What is sent to the AI?</summary><div class="ans"><p>Your question, the earlier questions of the same chat, the names of the tables and columns it may need with their glossary names, and your business definitions.</p><p>A few sample values from text columns are sent only while the <span class="ui">Send sample values</span> switch is on (<span class="ui">Settings &gt; AI Provider</span>; it is on in a new installation, and your Super Admin can switch it off). If a query fails, the query and the database's error message are sent so the AI can fix it.</p><p>Whole rows, passwords and the app's user names are never sent.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>Do you see my data?</summary><div class="ans"><p>No. The app runs on your PC and talks to your database and to the AI provider you chose. We receive something only if your Super Admin connects the app to a DataPilot account, for example to send us a setup file. Even then we never receive your questions, rows of data, passwords or users. The <a href="#privacy">privacy policy</a> lists exactly what we keep.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>Where are passwords and keys kept?</summary><div class="ans"><p>On the PC, encrypted, in <code>%APPDATA%\DataPilotAI</code>.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>Does this website track me?</summary><div class="ans"><p>No. It sets no cookies and has no analytics or trackers. It remembers your language and theme in your browser's storage, on your device only.</p></div></details>
+        </div>
+        <div class="narrow faq" data-l="ar">
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>هل يستطيع DataPilot تغيير بياناتي أو حذفها؟</summary><div class="ans"><p>لا. لا يُسمح للذكاء الاصطناعي إلا بكتابة استعلام للقراءة فقط، ويفحص DataPilot كل استعلام قبل تشغيله ويرفض ما عدا ذلك. وننصح أيضاً بحساب قاعدة بيانات لا يملك إلا صلاحية القراءة، فيفرض خادم قاعدة البيانات ذلك بدوره.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>ما الذي يُرسل إلى الذكاء الاصطناعي؟</summary><div class="ans"><p>سؤالك، والأسئلة السابقة في المحادثة نفسها، وأسماء الجداول والأعمدة التي قد يحتاجها مع أسمائها في المسرد، وتعريفات العمل لديك.</p><p>لا تُرسل بعض القيم النموذجية من الأعمدة النصية إلا ما دام مفتاح <span class="ui">Send sample values</span> مفعّلاً (<span class="ui">Settings &gt; AI Provider</span>؛ وهو مفعّل في التثبيت الجديد، ويستطيع الـ Super Admin إيقافه). وإذا فشل استعلام، يُرسل الاستعلام ورسالة الخطأ من قاعدة البيانات ليصحّحه الذكاء الاصطناعي.</p><p>لا تُرسل أبداً صفوف كاملة ولا كلمات مرور ولا أسماء مستخدمي التطبيق.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>هل ترون بياناتي؟</summary><div class="ans"><p>لا. يعمل التطبيق على جهازك ويتواصل مع قاعدة بياناتك ومع مزوّد الذكاء الاصطناعي الذي اخترته. لا يصلنا شيء إلا إذا ربط الـ Super Admin التطبيق بحساب DataPilot، مثلاً لإرسال ملف إعداد إلينا. وحتى عندها لا تصلنا أبداً أسئلتك ولا صفوف بياناتك ولا كلمات المرور ولا المستخدمون. تذكر <a href="#privacy">سياسة الخصوصية</a> بالضبط ما نحتفظ به.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>أين تُحفظ كلمات المرور والمفاتيح؟</summary><div class="ans"><p>على الجهاز، مشفّرةً، في <code>%APPDATA%\DataPilotAI</code>.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>هل يتتبّعني هذا الموقع؟</summary><div class="ans"><p>لا. لا يضع أي ملفات تعريف ارتباط (كوكيز)، ولا أدوات تحليل أو تتبّع. يتذكّر فقط اللغة والمظهر اللذين اخترتهما في مساحة التخزين بمتصفحك، على جهازك فقط.</p></div></details>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-faq-buying" aria-labelledby="t-faq-buying" tabindex="0" data-tab="buying">
+        <div class="narrow faq" data-l="en">
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>What does "per company" mean?</summary><div class="ans"><p>One price covers one installation and all its users. Free allows up to 3 active user accounts; Pro and Enterprise have no user limit.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>How do I pay?</summary><div class="ans"><p>Click Buy on the <a href="#pricing">Pricing</a> page, or email us and we send you a payment link. Paddle, our Merchant of Record, takes the payment, adds tax where it applies and sends the receipt.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>How do I get Pro after paying?</summary><div class="ans"><p>We send you a licence file. In the app, open <span class="ui">Settings &gt; Features &amp; licence</span> and click <span class="ui">Install licence...</span>.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>Can I cancel?</summary><div class="ans"><p>Yes, at any time. Pro stays on until the end of the period you paid for. After that the app goes back to the Free plan, and your settings stay.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>Can I get a refund?</summary><div class="ans"><p>Yes: a 14-day money-back guarantee on your first payment. See the <a href="#refunds">refund policy</a>.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>What is in Enterprise?</summary><div class="ans"><p>Everything in Pro, plus our setup service (we draft the glossary and the setup questions for your database) and priority support. Prices start at $149 per month and are quoted for your company. <a href="#contact">Contact us</a>.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>Why does Windows warn about the installer?</summary><div class="ans"><p>The installer is not signed yet. Click <span class="ui">More info</span>, then <span class="ui">Run anyway</span>. We will sign it in a later version.</p></div></details>
+        </div>
+        <div class="narrow faq" data-l="ar">
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>ماذا يعني «لكل شركة»؟</summary><div class="ans"><p>سعر واحد يغطي تثبيتاً واحداً وجميع مستخدميه. الخطة المجانية حتى 3 حسابات مستخدمين نشطة، وخطتا Pro وEnterprise بلا حد للمستخدمين.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>كيف أدفع؟</summary><div class="ans"><p>انقر زر الشراء في صفحة <a href="#pricing">الأسعار</a>، أو راسلنا فنرسل إليك رابط الدفع. تتولى Paddle، التاجر المسجّل لطلباتنا، تحصيل الدفعة، وتضيف الضريبة حيث تنطبق، وترسل الإيصال.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>كيف أحصل على خطة Pro بعد الدفع؟</summary><div class="ans"><p>نرسل إليك ملف ترخيص. في التطبيق افتح <span class="ui">Settings &gt; Features &amp; licence</span> وانقر <span class="ui">Install licence...</span>.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>هل يمكنني الإلغاء؟</summary><div class="ans"><p>نعم، في أي وقت. تبقى خطة Pro مفعّلة حتى نهاية الفترة التي دفعت عنها، ثم يعود التطبيق إلى الخطة المجانية وتبقى إعداداتك.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>هل يمكنني استرداد المبلغ؟</summary><div class="ans"><p>نعم: ضمان استرداد المال خلال 14 يوماً على دفعتك الأولى. اطّلع على <a href="#refunds">سياسة الاسترداد</a>.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>ماذا تتضمن خطة Enterprise؟</summary><div class="ans"><p>كل ما في خطة Pro، إضافةً إلى خدمة الإعداد (نكتب مسودة المسرد وأسئلة الإعداد لقاعدة بياناتك) ودعم ذي أولوية. تبدأ الأسعار من 149 دولاراً شهرياً، ونقدّم عرض سعر لشركتك. <a href="#contact">تواصل معنا</a>.</p></div></details>
+          <details><summary><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>لماذا يحذّر Windows من ملف التثبيت؟</summary><div class="ans"><p>ملف التثبيت غير موقّع بعد. انقر <span class="ui">More info</span> ثم <span class="ui">Run anyway</span>. سنوقّعه في إصدار لاحق.</p></div></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONTACT ===================== -->
+    <section class="view" id="view-contact" data-view="contact">
+      <div class="pagehead notabs">
+        <h1 id="h-contact" tabindex="-1"><span data-l="en">Contact</span><span data-l="ar">تواصل معنا</span></h1>
+      </div>
+      <div class="panel on" id="p-contact" role="region" aria-labelledby="h-contact" tabindex="0">
+        <div class="wrap grid-cards">
+          <div class="card mailcard">
+            <div class="ico-tile" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-contact"/></svg></div>
+            <h2><span data-l="en">Email us</span><span data-l="ar">راسلنا</span></h2>
+            <p><span data-l="en">About buying, a quote for Enterprise, a demo, or help with the app.</span><span data-l="ar">للشراء، أو لطلب عرض سعر لخطة Enterprise، أو لعرض توضيحي، أو للمساعدة في التطبيق.</span></p>
+            <a class="addr" data-mail="text" href="mailto:hassan93radi@gmail.com">hassan93radi@gmail.com</a>
+            <div class="row"><a class="btn primary" data-mail data-subject="DataPilot AI" href="mailto:hassan93radi@gmail.com?subject=DataPilot%20AI"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-contact"/></svg><span data-l="en">Write an email</span><span data-l="ar">اكتب رسالة</span></a></div>
+          </div>
+          <div class="card">
+            <h2><span data-l="en">When you write about a problem</span><span data-l="ar">عندما تراسلنا بشأن مشكلة</span></h2>
+            <ul class="checks" data-l="en" style="margin-top:10px">
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>A screenshot of the question and the answer, with <span class="ui">Thought for…</span> opened.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>The file <code>datapilot.log</code>: click <span class="ui">About</span>, then <span class="ui">Open log folder</span>.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Your app version (shown under <span class="ui">About</span>).</span></li>
+            </ul>
+            <ul class="checks" data-l="ar" style="margin-top:10px">
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>صورة للشاشة تُظهر السؤال والإجابة مع فتح <span class="ui">Thought for…</span>.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>ملف <code>datapilot.log</code>: انقر <span class="ui">About</span> ثم <span class="ui">Open log folder</span>.</span></li>
+              <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>إصدار التطبيق لديك (يظهر في <span class="ui">About</span>).</span></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h2><span data-l="en">Who we are</span><span data-l="ar">من نحن</span></h2>
+            <p><span data-l="en">DataPilot AI sells and supports the DataPilot AI app. It is part of <a href="https://hasanradi93.github.io/razov-db/">RAZOV.tech solutions</a>.</span><span data-l="ar">تبيع DataPilot AI تطبيق DataPilot AI وتقدّم الدعم له، وهي جزء من <a href="https://hasanradi93.github.io/razov-db/">حلول RAZOV.tech</a>.</span></p>
+            <p><span data-l="en">Our order process is conducted by our online reseller Paddle.com. Paddle.com is the Merchant of Record for all our orders. Paddle provides all customer service inquiries and handles returns.</span><span data-l="ar">تتم عملية الطلب لدينا عبر موزّعنا الإلكتروني Paddle.com، وPaddle.com هو التاجر المسجّل (Merchant of Record) لجميع طلباتنا. وتتولى Paddle جميع استفسارات خدمة العملاء المتعلقة بالطلبات وتعالج المرتجعات.</span></p>
+            <p class="row small"><a href="#terms"><span data-l="en">Terms</span><span data-l="ar">الشروط</span></a><a href="#privacy"><span data-l="en">Privacy</span><span data-l="ar">الخصوصية</span></a><a href="#refunds"><span data-l="en">Refunds</span><span data-l="ar">الاسترداد</span></a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== LEGAL: terms, privacy, refunds ===================== -->
+    <section class="view" id="view-legal" data-view="legal">
+      <div class="pagehead">
+        <h1 id="h-legal" tabindex="-1"><span data-l="en">Terms and policies</span><span data-l="ar">الشروط والسياسات</span></h1>
+        <div class="tabs" role="tablist" aria-labelledby="h-legal">
+          <button type="button" role="tab" class="tab" id="t-legal-terms" aria-controls="p-legal-terms" aria-selected="true" tabindex="0" data-tab="terms" data-hash="terms"><span data-l="en">Terms of service</span><span data-l="ar">شروط الخدمة</span></button>
+          <button type="button" role="tab" class="tab" id="t-legal-privacy" aria-controls="p-legal-privacy" aria-selected="false" tabindex="-1" data-tab="privacy" data-hash="privacy"><span data-l="en">Privacy policy</span><span data-l="ar">سياسة الخصوصية</span></button>
+          <button type="button" role="tab" class="tab" id="t-legal-refunds" aria-controls="p-legal-refunds" aria-selected="false" tabindex="-1" data-tab="refunds" data-hash="refunds"><span data-l="en">Refund policy</span><span data-l="ar">سياسة الاسترداد</span></button>
+        </div>
+      </div>
+
+      <!-- Terms -->
+      <div class="panel on" role="tabpanel" id="p-legal-terms" aria-labelledby="t-legal-terms" tabindex="0" data-tab="terms">
+        <article class="prose" data-l="en">
+          <p class="updated">Last updated 2026-11-25</p>
+          <p>These terms are an agreement between DataPilot AI ("we", "us") and the company that installs or buys DataPilot AI ("you"). By installing or using the software you accept them. If you accept them for a company, you confirm that you may do so on its behalf.</p>
+          <h2>1. Who sells</h2>
+          <p>DataPilot AI is the seller of the DataPilot AI software. You can reach us at <a data-mail="text" href="mailto:hassan93radi@gmail.com">hassan93radi@gmail.com</a>.</p>
+          <p>Our order process is conducted by our online reseller Paddle.com. Paddle.com is the Merchant of Record for all our orders. Paddle provides all customer service inquiries and handles returns. Paddle takes the payment, adds sales tax or VAT where it applies, and sends the receipt.</p>
+          <h2>2. The software and your licence</h2>
+          <ul>
+            <li>DataPilot AI is a desktop app for Windows, with an optional web server in Pro and Enterprise. It runs on your computers and connects to your database and to the AI provider you choose.</li>
+            <li>We grant you a non-exclusive, non-transferable licence to install and use the software for the internal purposes of one company: one installation and all its users, on the plan you chose, for as long as your licence is valid.</li>
+            <li>Free plan: no charge, up to 3 active user accounts, and the Free features. We may change what Free includes in future versions.</li>
+            <li>Pro and Enterprise: the features of the plan as shown on our Pricing page, for the period you paid for. Features marked "coming soon" are not part of what you buy until they are released.</li>
+            <li>We keep all rights in the software that these terms do not give you.</li>
+          </ul>
+          <h2>3. Subscriptions and payment</h2>
+          <ul>
+            <li>Pro is billed monthly or yearly, in advance. Enterprise is billed as agreed in your quote.</li>
+            <li>A subscription renews automatically at the end of each period until you cancel it. You can cancel at any time, through the link in your Paddle receipt or by emailing us. The cancellation takes effect at the end of the period already paid.</li>
+            <li>When a licence ends, the app returns to the Free plan. Your settings and your data stay where they are.</li>
+            <li>If we change a price, we tell you at least 30 days before it applies to your next renewal.</li>
+            <li>Refunds follow our <a href="#refunds">refund policy</a>: a 14-day money-back guarantee on the first payment.</li>
+          </ul>
+          <h2>4. What you may not do</h2>
+          <ul>
+            <li>Sell, rent, sublicense or share the software or a licence file with another company.</li>
+            <li>Remove or get around the licence checks, or change a licence file.</li>
+            <li>Reverse engineer the software, except where the law allows it despite this limit.</li>
+            <li>Use the software to reach a database or data you are not allowed to reach, or against the law.</li>
+          </ul>
+          <h2>5. Your data, your database and your AI provider</h2>
+          <ul>
+            <li>Your data stays yours. The software runs on your computers; we do not host your database or your answers.</li>
+            <li>You are responsible for the database logins you give the app, for the roles and data access you set, and for the people you give accounts to.</li>
+            <li>You choose the AI provider, use your own key, and accept that provider's terms and prices. What the app sends to it is described in our <a href="#privacy">privacy policy</a>.</li>
+          </ul>
+          <h2>6. AI answers</h2>
+          <p>Answers are written with the help of an AI and can be wrong. Check important figures before you rely on them: the app shows the steps and the query under "Thought for…", and the Verify page helps you test it. Answers are not professional, financial or legal advice.</p>
+          <h2>7. Updates and support</h2>
+          <ul>
+            <li>We provide updates for the plans and periods your licence covers.</li>
+            <li>Support is by email. Enterprise customers get priority support. Free users get support when we can.</li>
+          </ul>
+          <h2>8. Warranty</h2>
+          <p>We build DataPilot AI with care, and the app only reads your data. Still, to the extent the law allows, the software is provided "as is", without warranties of any kind, including fitness for a particular purpose.</p>
+          <h2>9. Liability</h2>
+          <p>To the extent the law allows, we are not liable for indirect or consequential losses, lost profits or lost data, and our total liability for any claim is limited to the amount you paid us in the 12 months before the claim. Nothing in these terms limits a liability that the law does not allow us to limit.</p>
+          <h2>10. Ending the licence</h2>
+          <p>You can stop using the software at any time. We may end a licence if you seriously break these terms and do not put it right within 14 days of our email.</p>
+          <h2>11. Changes to these terms</h2>
+          <p>We may update these terms. We publish the new version here with a new date. For a paid subscription, changes apply from your next renewal.</p>
+          <h2>12. Contact</h2>
+          <p>Questions about these terms: <a data-mail="text" href="mailto:hassan93radi@gmail.com">hassan93radi@gmail.com</a>.</p>
+          <footer class="site-foot small muted"><span>DataPilot AI is part of <a href="https://hasanradi93.github.io/razov-db/">RAZOV.tech solutions</a>.</span><a href="#privacy">Privacy</a><a href="#refunds">Refunds</a><a href="#contact">Contact</a></footer>
+        </article>
+        <article class="prose" data-l="ar">
+          <p class="updated">آخر تحديث <span class="ltr">2026-11-25</span></p>
+          <p class="small muted">إذا اختلفت هذه الترجمة العربية عن النسخة الإنجليزية، تُعتمد النسخة الإنجليزية.</p>
+          <p>هذه الشروط اتفاق بين DataPilot AI («نحن») والشركة التي تثبّت DataPilot AI أو تشتريه («أنت»). بتثبيت البرنامج أو استخدامه فإنك توافق عليها. وإذا وافقت عليها نيابةً عن شركة، فأنت تؤكد أنك مخوّل بذلك.</p>
+          <h2>1. من البائع</h2>
+          <p>DataPilot AI هي بائعة برنامج DataPilot AI. يمكنك مراسلتنا على <a data-mail="text" href="mailto:hassan93radi@gmail.com" class="ltr">hassan93radi@gmail.com</a>.</p>
+          <p>تتم عملية الطلب لدينا عبر موزّعنا الإلكتروني Paddle.com، وPaddle.com هو التاجر المسجّل (Merchant of Record) لجميع طلباتنا. وتتولى Paddle جميع استفسارات خدمة العملاء المتعلقة بالطلبات وتعالج المرتجعات. وتتولى Paddle تحصيل الدفعة، وإضافة ضريبة المبيعات أو ضريبة القيمة المضافة حيث تنطبق، وإرسال الإيصال.</p>
+          <h2>2. البرنامج وترخيصك</h2>
+          <ul>
+            <li>DataPilot AI تطبيق لسطح المكتب يعمل على Windows، مع خادم ويب اختياري في خطتي Pro وEnterprise. يعمل على أجهزتك ويتصل بقاعدة بياناتك وبمزوّد الذكاء الاصطناعي الذي تختاره.</li>
+            <li>نمنحك ترخيصاً غير حصري وغير قابل للنقل لتثبيت البرنامج واستخدامه للأغراض الداخلية لشركة واحدة: تثبيت واحد وجميع مستخدميه، وفق الخطة التي اخترتها، طوال مدة صلاحية ترخيصك.</li>
+            <li>الخطة المجانية: بلا مقابل، حتى 3 حسابات مستخدمين نشطة، مع ميزات الخطة المجانية. قد نغيّر ما تتضمنه الخطة المجانية في الإصدارات القادمة.</li>
+            <li>خطتا Pro وEnterprise: ميزات الخطة كما تظهر في صفحة الأسعار، للمدة التي دفعت عنها. الميزات الموسومة «قريباً» ليست جزءاً مما تشتريه حتى تصدر.</li>
+            <li>نحتفظ بجميع الحقوق في البرنامج التي لا تمنحك إياها هذه الشروط.</li>
+          </ul>
+          <h2>3. الاشتراكات والدفع</h2>
+          <ul>
+            <li>تُدفع خطة Pro شهرياً أو سنوياً مقدّماً، وتُدفع خطة Enterprise وفق ما يُتفق عليه في عرض السعر.</li>
+            <li>يتجدد الاشتراك تلقائياً في نهاية كل فترة حتى تلغيه. يمكنك الإلغاء في أي وقت عبر الرابط في إيصال Paddle أو بمراسلتنا، ويسري الإلغاء في نهاية الفترة المدفوعة.</li>
+            <li>عند انتهاء الترخيص يعود التطبيق إلى الخطة المجانية، وتبقى إعداداتك وبياناتك في مكانها.</li>
+            <li>إذا غيّرنا السعر نبلغك قبل 30 يوماً على الأقل من تطبيقه على تجديدك التالي.</li>
+            <li>يخضع استرداد المبالغ <a href="#refunds">لسياسة الاسترداد</a> لدينا: ضمان استرداد المال خلال 14 يوماً على الدفعة الأولى.</li>
+          </ul>
+          <h2>4. ما لا يجوز لك فعله</h2>
+          <ul>
+            <li>بيع البرنامج أو تأجيره أو منح ترخيص من الباطن، أو مشاركة البرنامج أو ملف الترخيص مع شركة أخرى.</li>
+            <li>إزالة فحوص الترخيص أو الالتفاف عليها، أو تعديل ملف الترخيص.</li>
+            <li>الهندسة العكسية للبرنامج، إلا حيث يسمح القانون بذلك رغم هذا القيد.</li>
+            <li>استخدام البرنامج للوصول إلى قاعدة بيانات أو بيانات غير مسموح لك بالوصول إليها، أو بما يخالف القانون.</li>
+          </ul>
+          <h2>5. بياناتك وقاعدة بياناتك ومزوّد الذكاء الاصطناعي</h2>
+          <ul>
+            <li>بياناتك ملك لك. يعمل البرنامج على أجهزتك، ولا نستضيف قاعدة بياناتك ولا إجاباتك.</li>
+            <li>أنت مسؤول عن بيانات الدخول إلى قاعدة البيانات التي تعطيها للتطبيق، وعن الأدوار وصلاحيات الوصول التي تضبطها، وعن الأشخاص الذين تمنحهم حسابات.</li>
+            <li>أنت تختار مزوّد الذكاء الاصطناعي، وتستخدم مفتاحك الخاص، وتقبل شروط ذلك المزوّد وأسعاره. تصف <a href="#privacy">سياسة الخصوصية</a> ما يرسله التطبيق إليه.</li>
+          </ul>
+          <h2>6. إجابات الذكاء الاصطناعي</h2>
+          <p>تُكتب الإجابات بمساعدة الذكاء الاصطناعي وقد تكون خاطئة. تحقّق من الأرقام المهمة قبل الاعتماد عليها: يعرض التطبيق الخطوات والاستعلام تحت «Thought for…»، وتساعدك صفحة التحقق على اختباره. الإجابات ليست استشارة مهنية أو مالية أو قانونية.</p>
+          <h2>7. التحديثات والدعم</h2>
+          <ul>
+            <li>نوفّر التحديثات للخطط والفترات التي يغطيها ترخيصك.</li>
+            <li>الدعم عبر البريد الإلكتروني. يحصل عملاء Enterprise على دعم ذي أولوية، ويحصل مستخدمو الخطة المجانية على الدعم حين يتسنّى لنا ذلك.</li>
+          </ul>
+          <h2>8. الضمان</h2>
+          <p>نبني DataPilot AI بعناية، والتطبيق يقرأ بياناتك فقط. ومع ذلك، وفي الحدود التي يسمح بها القانون، يُقدَّم البرنامج «كما هو» دون أي ضمانات، بما في ذلك ملاءمته لغرض معيّن.</p>
+          <h2>9. المسؤولية</h2>
+          <p>في الحدود التي يسمح بها القانون، لسنا مسؤولين عن الخسائر غير المباشرة أو التبعية أو الأرباح الفائتة أو البيانات المفقودة، ولا تتجاوز مسؤوليتنا الإجمالية عن أي مطالبة المبلغ الذي دفعته لنا خلال الأشهر الاثني عشر السابقة للمطالبة. لا شيء في هذه الشروط يحدّ من مسؤولية لا يسمح القانون بتحديدها.</p>
+          <h2>10. إنهاء الترخيص</h2>
+          <p>يمكنك التوقف عن استخدام البرنامج في أي وقت. ويجوز لنا إنهاء الترخيص إذا خالفت هذه الشروط مخالفة جسيمة ولم تصحّحها خلال 14 يوماً من رسالتنا.</p>
+          <h2>11. تغيير هذه الشروط</h2>
+          <p>قد نحدّث هذه الشروط، وننشر النسخة الجديدة هنا بتاريخ جديد. في الاشتراك المدفوع تسري التغييرات من تجديدك التالي.</p>
+          <h2>12. التواصل</h2>
+          <p>لأي سؤال عن هذه الشروط: <a data-mail="text" href="mailto:hassan93radi@gmail.com" class="ltr">hassan93radi@gmail.com</a>.</p>
+          <footer class="site-foot small muted"><span>DataPilot AI جزء من <a href="https://hasanradi93.github.io/razov-db/">حلول RAZOV.tech</a>.</span><a href="#privacy">الخصوصية</a><a href="#refunds">الاسترداد</a><a href="#contact">تواصل معنا</a></footer>
+        </article>
+      </div>
+
+      <!-- Privacy -->
+      <div class="panel" role="tabpanel" id="p-legal-privacy" aria-labelledby="t-legal-privacy" tabindex="0" data-tab="privacy">
+        <article class="prose" data-l="en">
+          <p class="updated">Last updated 2026-11-25</p>
+          <p>This policy explains what happens to information on this website, in the DataPilot AI app, and on the DataPilot platform. DataPilot AI ("we") is responsible for it. Contact: <a data-mail="text" href="mailto:hassan93radi@gmail.com">hassan93radi@gmail.com</a>.</p>
+          <h2>1. This website</h2>
+          <ul>
+            <li>This website sets no cookies. It has no analytics, no advertising and no trackers.</li>
+            <li>It remembers your language and theme in your browser's own storage (localStorage). That choice stays on your device and is never sent to us.</li>
+            <li>It is hosted on GitHub Pages. GitHub may record technical data, such as IP addresses, in its server logs under GitHub's own privacy statement. We do not receive these logs.</li>
+            <li>When online checkout is available and you click Buy, the page loads Paddle's checkout script (Paddle.js) and you pay in Paddle's checkout. Nothing from Paddle loads before you click. As our Merchant of Record, Paddle processes your payment and billing details under its own privacy and cookie policies. We receive what we need to deliver and support your licence: your name, email address, billing country and what you bought.</li>
+            <li>If you email us, we keep your message and your address to answer you and for our records.</li>
+          </ul>
+          <h2>2. The DataPilot AI app</h2>
+          <p>The app runs on your own PC and network. We do not run a server that your questions or your data pass through.</p>
+          <ul>
+            <li><strong>Stays on your computers:</strong> your database and its rows; the app's accounts, passwords and AI keys (encrypted, in <code>%APPDATA%\DataPilotAI</code>); your settings, glossary, definitions and audit log, or your shared store on your own server.</li>
+            <li><strong>Sent to the AI provider you chose, with your own key:</strong> your question and the earlier questions of the same chat; the names of the tables and columns it may need, with their glossary names; your business definitions; the queries written for the earlier questions; when the glossary is drafted, the names, types, keys and links of tables and columns, row counts, and the plain names already in the glossary.</li>
+            <li><strong>Sample values:</strong> a few values from text columns that have few different values (these can include names) are sent only while the <span class="ui">Send sample values</span> switch in <span class="ui">Settings &gt; AI Provider</span> is on. It is on in a new installation; your Super Admin can switch it off at any time.</li>
+            <li><strong>Errors:</strong> if a query fails, the query and the database's error message are sent so the AI can fix it. Such a message can quote a value from your data.</li>
+            <li><strong>Never sent to the AI:</strong> whole table rows, passwords, or the app's user names.</li>
+            <li>The AI provider handles this information under its own terms and privacy policy, which you accept when you get the key. With a local model (Ollama), it stays in your network.</li>
+          </ul>
+          <h2>3. The DataPilot platform, only if you use it</h2>
+          <p>The app talks to us only if your Super Admin connects it to a DataPilot account (<span class="ui">Settings &gt; DataPilot account</span>), for example to receive licences, updates or our setup service. A setup file is sent only when you choose to send it, after a box that says what it holds. The platform keeps only this:</p>
+          <blockquote>DataPilot keeps the name of your database and its server version, the names of your tables and columns, their meanings, your business definitions, quick questions, verify lists, licences and installers. It also keeps the app version you run, when your app last contacted it, the time you sent each setup file, the column types, keys and rough row counts of your tables, and sample values only when you tick the box. If you switch the daily health ping on, it keeps the day and the number of questions, errors and AI failures for that day. It never stores the text of your questions, your database, your passwords, your users or any rows of data.</blockquote>
+          <p>We use it only to set up, license, update and support your installation.</p>
+          <h2>4. Sharing</h2>
+          <p>We do not sell personal information. We share it only with Paddle to handle payments, and when the law requires it.</p>
+          <h2>5. How long we keep it</h2>
+          <p>Emails and order records: as long as we need them for support, accounting and the law. Platform data: while your DataPilot account is active, or until you ask us to delete it.</p>
+          <h2>6. Your rights</h2>
+          <p>You can ask us what we hold about you or your company, and ask us to correct or delete it: email <a data-mail="text" href="mailto:hassan93radi@gmail.com">hassan93radi@gmail.com</a>. Data in the app is on your own computers, where you control and delete it.</p>
+          <h2>7. Changes</h2>
+          <p>We publish any new version of this policy here, with a new date.</p>
+          <footer class="site-foot small muted"><span>DataPilot AI is part of <a href="https://hasanradi93.github.io/razov-db/">RAZOV.tech solutions</a>.</span><a href="#terms">Terms</a><a href="#refunds">Refunds</a><a href="#contact">Contact</a></footer>
+        </article>
+        <article class="prose" data-l="ar">
+          <p class="updated">آخر تحديث <span class="ltr">2026-11-25</span></p>
+          <p class="small muted">إذا اختلفت هذه الترجمة العربية عن النسخة الإنجليزية، تُعتمد النسخة الإنجليزية.</p>
+          <p>تشرح هذه السياسة ما يحدث للمعلومات على هذا الموقع، وفي تطبيق DataPilot AI، وعلى منصة DataPilot. والمسؤول عنها DataPilot AI («نحن»). للتواصل: <a data-mail="text" href="mailto:hassan93radi@gmail.com" class="ltr">hassan93radi@gmail.com</a>.</p>
+          <h2>1. هذا الموقع</h2>
+          <ul>
+            <li>لا يضع هذا الموقع أي ملفات تعريف ارتباط (كوكيز)، ولا يستخدم أدوات تحليل أو إعلانات أو تتبّع.</li>
+            <li>يتذكّر اللغة والمظهر اللذين اخترتهما في مساحة التخزين الخاصة بمتصفحك (localStorage). يبقى هذا الاختيار على جهازك ولا يُرسل إلينا أبداً.</li>
+            <li>الموقع مستضاف على GitHub Pages. قد يسجّل GitHub بيانات تقنية، مثل عناوين IP، في سجلات خوادمه وفق بيان الخصوصية الخاص به. لا تصلنا هذه السجلات.</li>
+            <li>عندما يتوفر الدفع الإلكتروني وتنقر زر الشراء، تحمّل الصفحة برنامج الدفع الخاص بـ Paddle (Paddle.js) وتدفع في صفحة الدفع لدى Paddle. لا يُحمَّل شيء من Paddle قبل أن تنقر. وبصفتها التاجر المسجّل لطلباتنا، تعالج Paddle بيانات الدفع والفوترة وفق سياستَي الخصوصية وملفات تعريف الارتباط الخاصتين بها. ويصلنا ما نحتاجه لتسليم ترخيصك ودعمه: اسمك، وبريدك الإلكتروني، وبلد الفوترة، وما اشتريته.</li>
+            <li>إذا راسلتنا، نحتفظ برسالتك وعنوانك للرد عليك ولسجلاتنا.</li>
+          </ul>
+          <h2>2. تطبيق DataPilot AI</h2>
+          <p>يعمل التطبيق على جهازك وشبكتك. لا نشغّل خادماً تمرّ عبره أسئلتك أو بياناتك.</p>
+          <ul>
+            <li><strong>يبقى على أجهزتك:</strong> قاعدة بياناتك وصفوفها؛ وحسابات التطبيق وكلمات المرور ومفاتيح الذكاء الاصطناعي (مشفّرة، في <code>%APPDATA%\DataPilotAI</code>)؛ وإعداداتك ومسردك وتعريفاتك وسجل التدقيق، أو مخزنك المشترك على خادمك.</li>
+            <li><strong>يُرسل إلى مزوّد الذكاء الاصطناعي الذي اخترته، بمفتاحك:</strong> سؤالك والأسئلة السابقة في المحادثة نفسها؛ وأسماء الجداول والأعمدة التي قد يحتاجها مع أسمائها في المسرد؛ وتعريفات العمل لديك؛ والاستعلامات التي كُتبت للأسئلة السابقة؛ وعند كتابة مسودة المسرد: أسماء الجداول والأعمدة وأنواعها ومفاتيحها والروابط بينها، وعدد الصفوف، والأسماء الواضحة الموجودة في المسرد.</li>
+            <li><strong>القيم النموذجية:</strong> لا تُرسل بعض القيم من الأعمدة النصية القليلة القيم المختلفة (وقد تتضمن أسماء) إلا ما دام مفتاح <span class="ui">Send sample values</span> في <span class="ui">Settings &gt; AI Provider</span> مفعّلاً. وهو مفعّل في التثبيت الجديد، ويستطيع الـ Super Admin إيقافه في أي وقت.</li>
+            <li><strong>الأخطاء:</strong> إذا فشل استعلام، يُرسل الاستعلام ورسالة الخطأ من قاعدة البيانات ليصحّحه الذكاء الاصطناعي. وقد تقتبس هذه الرسالة قيمة من بياناتك.</li>
+            <li><strong>لا يُرسل إلى الذكاء الاصطناعي أبداً:</strong> صفوف الجداول الكاملة، ولا كلمات المرور، ولا أسماء مستخدمي التطبيق.</li>
+            <li>يتعامل مزوّد الذكاء الاصطناعي مع هذه المعلومات وفق شروطه وسياسة الخصوصية الخاصة به، التي تقبلها عند حصولك على المفتاح. ومع نموذج محلي (Ollama) تبقى داخل شبكتك.</li>
+          </ul>
+          <h2>3. منصة DataPilot، فقط إذا استخدمتها</h2>
+          <p>لا يتواصل التطبيق معنا إلا إذا ربطه الـ Super Admin بحساب DataPilot (<span class="ui">Settings &gt; DataPilot account</span>)، مثلاً لتلقّي التراخيص أو التحديثات أو خدمة الإعداد. ولا يُرسل ملف الإعداد إلا عندما تختار إرساله، بعد مربع يوضح ما يحتويه. ولا تحتفظ المنصة إلا بما يلي:</p>
+          <blockquote>يحتفظ DataPilot باسم قاعدة بياناتك وإصدار خادمها، وأسماء جداولك وأعمدتك ومعانيها، وتعريفات العمل لديك، والأسئلة السريعة، وقوائم التحقق، والتراخيص وملفات التثبيت. ويحتفظ أيضاً بإصدار التطبيق الذي تستخدمه، وآخر مرة اتصل فيها تطبيقك به، ووقت إرسال كل ملف إعداد، وأنواع الأعمدة ومفاتيحها والعدد التقريبي لصفوف جداولك، والقيم النموذجية فقط عندما تحدد المربع. وإذا فعّلت فحص الحالة اليومي، يحتفظ باليوم وبعدد الأسئلة والأخطاء وإخفاقات الذكاء الاصطناعي في ذلك اليوم. ولا يخزّن أبداً نص أسئلتك، ولا قاعدة بياناتك، ولا كلمات مرورك، ولا مستخدميك، ولا أي صفوف من البيانات.</blockquote>
+          <p>نستخدم ذلك فقط لإعداد تثبيتك وترخيصه وتحديثه ودعمه.</p>
+          <h2>4. المشاركة</h2>
+          <p>لا نبيع المعلومات الشخصية. لا نشاركها إلا مع Paddle لمعالجة الدفع، وحين يفرض القانون ذلك.</p>
+          <h2>5. مدة الاحتفاظ</h2>
+          <p>الرسائل وسجلات الطلبات: ما دمنا نحتاجها للدعم والمحاسبة والقانون. بيانات المنصة: ما دام حسابك في DataPilot فعّالاً، أو حتى تطلب حذفها.</p>
+          <h2>6. حقوقك</h2>
+          <p>يمكنك أن تسألنا عمّا نحتفظ به عنك أو عن شركتك، وأن تطلب تصحيحه أو حذفه: راسلنا على <a data-mail="text" href="mailto:hassan93radi@gmail.com" class="ltr">hassan93radi@gmail.com</a>. أما البيانات في التطبيق فهي على أجهزتك، حيث تتحكم بها وتحذفها.</p>
+          <h2>7. التغييرات</h2>
+          <p>ننشر أي نسخة جديدة من هذه السياسة هنا بتاريخ جديد.</p>
+          <footer class="site-foot small muted"><span>DataPilot AI جزء من <a href="https://hasanradi93.github.io/razov-db/">حلول RAZOV.tech</a>.</span><a href="#terms">الشروط</a><a href="#refunds">الاسترداد</a><a href="#contact">تواصل معنا</a></footer>
+        </article>
+      </div>
+
+      <!-- Refunds -->
+      <div class="panel" role="tabpanel" id="p-legal-refunds" aria-labelledby="t-legal-refunds" tabindex="0" data-tab="refunds">
+        <article class="prose" data-l="en">
+          <p class="updated">Last updated 2026-11-25</p>
+          <h2>14-day money-back guarantee</h2>
+          <p>If DataPilot AI Pro or Enterprise is not right for your company, ask within 14 days of your first payment and we refund it in full. You do not need to give a reason.</p>
+          <h2>How to ask</h2>
+          <p>Email <a data-mail="text" href="mailto:hassan93radi@gmail.com">hassan93radi@gmail.com</a> from the address you used to buy, with your order number (it is on the Paddle receipt), or contact Paddle through the link in that receipt. Paddle, our Merchant of Record, processes the refund to the card or account you paid with. Your bank may take a few days to show it.</p>
+          <h2>After a refund</h2>
+          <p>The licence ends and the app returns to the Free plan. Your settings and your data stay on your computers.</p>
+          <h2>Renewals</h2>
+          <p>The guarantee covers the first payment of a subscription. Later renewals are not refunded, but you can cancel at any time and keep your plan until the end of the period you paid for.</p>
+          <h2>Enterprise quotes</h2>
+          <p>If your written Enterprise quote has different refund terms, the quote applies.</p>
+          <h2>Your rights under the law</h2>
+          <p>If the law where you are gives you more rights, those rights apply.</p>
+          <footer class="site-foot small muted"><span>DataPilot AI is part of <a href="https://hasanradi93.github.io/razov-db/">RAZOV.tech solutions</a>.</span><a href="#terms">Terms</a><a href="#privacy">Privacy</a><a href="#contact">Contact</a></footer>
+        </article>
+        <article class="prose" data-l="ar">
+          <p class="updated">آخر تحديث <span class="ltr">2026-11-25</span></p>
+          <p class="small muted">إذا اختلفت هذه الترجمة العربية عن النسخة الإنجليزية، تُعتمد النسخة الإنجليزية.</p>
+          <h2>ضمان استرداد المال خلال 14 يوماً</h2>
+          <p>إذا لم تناسب خطة Pro أو Enterprise من DataPilot AI شركتك، فاطلب الاسترداد خلال 14 يوماً من دفعتك الأولى ونعيد إليك المبلغ كاملاً. لا تحتاج إلى ذكر السبب.</p>
+          <h2>كيف تطلب الاسترداد</h2>
+          <p>راسلنا على <a data-mail="text" href="mailto:hassan93radi@gmail.com" class="ltr">hassan93radi@gmail.com</a> من العنوان الذي اشتريت به، مع رقم الطلب (تجده في إيصال Paddle)، أو تواصل مع Paddle عبر الرابط في ذلك الإيصال. تعالج Paddle، التاجر المسجّل لطلباتنا، استرداد المبلغ إلى البطاقة أو الحساب الذي دفعت منه. وقد يستغرق ظهوره لدى مصرفك بضعة أيام.</p>
+          <h2>بعد الاسترداد</h2>
+          <p>ينتهي الترخيص ويعود التطبيق إلى الخطة المجانية. تبقى إعداداتك وبياناتك على أجهزتك.</p>
+          <h2>التجديدات</h2>
+          <p>يشمل الضمان الدفعة الأولى من الاشتراك. لا تُسترد التجديدات اللاحقة، لكن يمكنك الإلغاء في أي وقت والاحتفاظ بخطتك حتى نهاية الفترة التي دفعت عنها.</p>
+          <h2>عروض أسعار Enterprise</h2>
+          <p>إذا تضمّن عرض السعر المكتوب لخطة Enterprise شروط استرداد مختلفة، يُعتمد عرض السعر.</p>
+          <h2>حقوقك بموجب القانون</h2>
+          <p>إذا منحك القانون في بلدك حقوقاً أكثر، فتلك الحقوق هي التي تنطبق.</p>
+          <footer class="site-foot small muted"><span>DataPilot AI جزء من <a href="https://hasanradi93.github.io/razov-db/">حلول RAZOV.tech</a>.</span><a href="#terms">الشروط</a><a href="#privacy">الخصوصية</a><a href="#contact">تواصل معنا</a></footer>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar" id="tabbar" aria-label="Sections">
+    <a href="#home" data-nav="home"><span class="pill"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-home"/></svg></span><span class="tl"><span data-l="en">Home</span><span data-l="ar">الرئيسية</span></span></a>
+    <a href="#features" data-nav="features"><span class="pill"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-features"/></svg></span><span class="tl"><span data-l="en">Features</span><span data-l="ar">الميزات</span></span></a>
+    <a href="#pricing" data-nav="pricing"><span class="pill"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-pricing"/></svg></span><span class="tl"><span data-l="en">Pricing</span><span data-l="ar">الأسعار</span></span></a>
+    <a href="#download" data-nav="download"><span class="pill"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-download"/></svg></span><span class="tl"><span data-l="en">Download</span><span data-l="ar">التنزيل</span></span></a>
+    <button type="button" id="btn-more" aria-haspopup="dialog" aria-expanded="false" aria-controls="sheet"><span class="pill"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-more"/></svg></span><span class="tl"><span data-l="en">More</span><span data-l="ar">المزيد</span><span class="sr" id="more-cur"></span></span></button>
+  </nav>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+  <h2 id="sheet-title"><span data-l="en">More sections</span><span data-l="ar">أقسام أخرى</span></h2>
+  <ul>
+    <li><a href="#how" data-nav="how"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-how"/></svg><span data-l="en">How it works</span><span data-l="ar">كيف يعمل</span></a></li>
+    <li><a href="#faq" data-nav="faq"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-faq"/></svg><span data-l="en">Questions and answers</span><span data-l="ar">الأسئلة الشائعة</span></a></li>
+    <li><a href="#contact" data-nav="contact"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-contact"/></svg><span data-l="en">Contact</span><span data-l="ar">تواصل معنا</span></a></li>
+    <li><a href="#terms" data-nav="legal"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-legal"/></svg><span data-l="en">Terms, privacy and refunds</span><span data-l="ar">الشروط والخصوصية والاسترداد</span></a></li>
+    <li><a href="https://hasanradi93.github.io/razov-db/"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-company"/></svg><span data-l="en">Part of RAZOV.tech solutions</span><span data-l="ar">جزء من حلول RAZOV.tech</span></a></li>
+  </ul>
+</div>
+<div class="tip" id="tip" role="tooltip" hidden></div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
