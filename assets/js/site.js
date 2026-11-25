@@ -3,11 +3,12 @@
 
 // Store link. While empty, the store area stays hidden and the paid DataPilot
 // plans show "Contact us to buy" (mailto). Set an https:// URL to switch them
-// to "Buy" and reveal the store button.
+// to "Buy" and reveal the store button. When Paddle checkout works, set it to
+// 'https://hasanradi93.github.io/razov-db/datapilot/#pricing' (it must start with https://).
 const STORE_URL = '';
 
 // Paths that are live now. Any element with data-link-pending="<path>" whose
-// path is listed here becomes a real link, e.g. add '/sqlnext/' at launch.
+// path is listed here becomes a real link, e.g. add '/razov-db/sqlnext/' at launch.
 const LIVE_PENDING_LINKS = [];
 
 (function () {
