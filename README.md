@@ -4,7 +4,7 @@ The database products site of **RAZOV.tech solutions**, published with GitHub Pa
 <https://hasanradi93.github.io/razov-db/>. It presents the three database products:
 
 - **DataPilot AI**: ask your company's database questions in plain words.
-- **SQLNext**: convert databases between versions and engines, with every change explained.
+- **SQLNext**: convert MySQL databases to newer versions, with every change explained.
 - **SchemaZone**: see a `.sql` file as an interactive ER diagram, in your browser.
 
 The root <https://hasanradi93.github.io/> is a small RAZOV hub (repo `hasanradi93.github.io`) with two

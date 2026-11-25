@@ -50,8 +50,10 @@ Live check, 2026-11-25:
 - **Paddle store live:** set `STORE_URL` in `assets/js/site.js` to
   `https://hasanradi93.github.io/razov-db/datapilot/#pricing`. It must start with `https://`, and must be
   set only once checkout works, because it also shows "Buy" and an online-store banner.
-- **SQLNext page live:** publish it into `sqlnext/`, then add `'/razov-db/sqlnext/'` to
-  `LIVE_PENDING_LINKS` in `assets/js/site.js`.
+- **SQLNext page live:** publish it into `sqlnext/` once the owner approves, then add `'/razov-db/sqlnext/'` to
+  `LIVE_PENDING_LINKS` in `assets/js/site.js`. Its installers will be on the public repo
+  `hasanradi93/sqlnext-releases`, because a public `sqlnext` repo cannot exist next to the private `SQLNext`.
+- **SQLNext wording:** 1.0 converts MySQL to newer MySQL only. Fixed on 2026-11-25 here and in the hub.
 - **New SchemaZone version:** see README, "Updating SchemaZone".
 
 ## Open points for the owner
