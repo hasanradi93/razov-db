@@ -1,4 +1,4 @@
-/* RAZOV.tech solutions: animated "database network" behind the hero.
+/* Razov DB: animated "database network" behind the hero.
    Nodes drift, nearby nodes link up, and pulses travel along the links.
    Cheap by design: one canvas, DPR capped at 2, paused when the hero is off
    screen or the tab is hidden, and a single static frame for reduced motion. */

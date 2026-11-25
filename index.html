@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RAZOV.tech solutions | DataPilot AI, SQLNext and SchemaZone</title>
-  <meta name="description" content="RAZOV.tech solutions makes database tools that ask, convert and design. DataPilot AI answers plain-word questions about your database, SQLNext converts MySQL databases to newer versions, and SchemaZone turns a .sql file into an interactive ER diagram.">
+  <title>Razov DB | DataPilot AI, SchemaZone and SQLNext</title>
+  <meta name="description" content="Razov DB makes database tools that ask, convert and design. DataPilot AI answers plain-word questions about your database, SQLNext converts MySQL databases to newer versions, and SchemaZone turns a .sql file into an interactive ER diagram.">
   <link rel="canonical" href="https://hasanradi93.github.io/razov-db/">
   <meta name="color-scheme" content="dark light">
   <meta name="theme-color" content="#060a13">
@@ -12,19 +12,19 @@
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="RAZOV.tech solutions">
-  <meta property="og:title" content="RAZOV.tech solutions: database solutions that ask, convert and design">
+  <meta property="og:site_name" content="Razov DB">
+  <meta property="og:title" content="Razov DB: database solutions that ask, convert and design">
   <meta property="og:description" content="DataPilot AI asks your data, SQLNext moves your MySQL database to a newer version, and SchemaZone designs and maps your database.">
   <meta property="og:url" content="https://hasanradi93.github.io/razov-db/">
   <meta property="og:image" content="https://hasanradi93.github.io/razov-db/assets/img/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="RAZOV.tech solutions logo with the words: database solutions that ask, convert and design.">
+  <meta property="og:image:alt" content="The Razov DB mark, a violet eight-point star, with the words: database solutions that ask, convert and design.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="RAZOV.tech solutions: database solutions that ask, convert and design">
+  <meta name="twitter:title" content="Razov DB: database solutions that ask, convert and design">
   <meta name="twitter:description" content="DataPilot AI asks your data, SQLNext moves your MySQL database to a newer version, and SchemaZone designs and maps your database.">
   <meta name="twitter:image" content="https://hasanradi93.github.io/razov-db/assets/img/og-image.png">
-  <meta name="twitter:image:alt" content="RAZOV.tech solutions logo with the words: database solutions that ask, convert and design.">
+  <meta name="twitter:image:alt" content="The Razov DB mark, a violet eight-point star, with the words: database solutions that ask, convert and design.">
 
   <!-- Theme first: an inline script placed after the stylesheets would wait for them and block parsing. -->
   <script>
@@ -40,10 +40,8 @@
       root.setAttribute('data-theme', theme);
     })();
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap"></noscript>
+  <link rel="preload" href="assets/fonts/anybody-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/readex-pro-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/sections.css">
 
@@ -54,9 +52,14 @@
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "RAZOV.tech solutions",
+      "name": "Razov DB",
       "url": "https://hasanradi93.github.io/razov-db/",
       "logo": "https://hasanradi93.github.io/razov-db/assets/img/logo-mark.svg",
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "RAZOV.tech solutions",
+        "url": "https://hasanradi93.github.io/"
+      },
       "email": "hassan93radi@gmail.com",
       "sameAs": ["https://github.com/hasanradi93"]
     }
@@ -66,6 +69,7 @@
   <a class="skip-link" href="#main">Skip to content</a>
 
   <svg class="icon-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="star" viewBox="0 0 32 32"><path fill="currentColor" d="M16 2 20.09 6.11 25.9 6.1 25.89 11.91 30 16 25.89 20.09 25.9 25.9 20.09 25.89 16 30 11.91 25.89 6.1 25.9 6.11 20.09 2 16 6.11 11.91 6.1 6.1 11.91 6.11Z"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
     <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
@@ -104,10 +108,14 @@
 
   <header class="site-header" data-header>
     <div class="container header__inner">
-      <a class="brand" href="#top">
-        <img src="assets/img/logo-mark.svg" width="36" height="36" alt="">
-        <span>RAZOV<span class="brand__tld">.tech</span> <span class="brand__sub">solutions</span></span>
-      </a>
+      <!-- The razov.tech brand, as in Razov Bots: the parent razov.tech, then this line, db. -->
+      <div class="brand">
+        <a class="brand-home" href="#top" aria-label="Razov DB, home"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#star"/></svg></a>
+        <!-- Links to the hub for now; it becomes https://razov.tech when the domain is live. -->
+        <a class="brand-root" href="https://hasanradi93.github.io/">razov.tech</a>
+        <svg class="brand-branch" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 2v6a4 4 0 0 0 4 4h6M10 9l3 3-3 3"/></svg>
+        <a class="brand-leaf" href="#top"><span class="visually-hidden">Razov </span>db</a>
+      </div>
       <nav id="site-nav" class="site-nav" aria-label="Main">
         <ul>
           <li><a href="#products">Products</a></li>
@@ -137,7 +145,7 @@
       <div class="hero__scrim" aria-hidden="true"></div>
       <div class="container hero__inner">
         <div class="hero__content">
-          <p class="eyebrow">RAZOV.tech solutions</p>
+          <p class="eyebrow">Razov DB</p>
           <h1 id="hero-title">Database solutions that <span class="text-gradient">ask, convert and design.</span></h1>
           <p class="hero__lead">One family of tools for the databases you already have. <strong>DataPilot</strong> asks your data, <strong>SQLNext</strong> moves your MySQL database to a newer version, and <strong>SchemaZone</strong> designs and maps your database.</p>
           <p class="typing" aria-hidden="true">
@@ -771,10 +779,14 @@
   <footer class="site-footer">
     <div class="container footer__grid">
       <div class="footer__brand">
-        <a class="brand" href="#top">
-          <img src="assets/img/logo-mark.svg" width="36" height="36" alt="" loading="lazy">
-          <span>RAZOV<span class="brand__tld">.tech</span> <span class="brand__sub">solutions</span></span>
-        </a>
+        <!-- The razov.tech brand, as in Razov Bots: the parent razov.tech, then this line, db. -->
+        <div class="brand">
+          <a class="brand-home" href="#top" aria-label="Razov DB, home"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#star"/></svg></a>
+          <!-- Links to the hub for now; it becomes https://razov.tech when the domain is live. -->
+          <a class="brand-root" href="https://hasanradi93.github.io/">razov.tech</a>
+          <svg class="brand-branch" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 2v6a4 4 0 0 0 4 4h6M10 9l3 3-3 3"/></svg>
+          <a class="brand-leaf" href="#top"><span class="visually-hidden">Razov </span>db</a>
+        </div>
         <p>Database solutions that ask, convert and design.</p>
       </div>
       <nav aria-label="Products">
@@ -792,13 +804,13 @@
           <li><a href="#pricing">Pricing</a></li>
           <li><a href="#contact">Contact</a></li>
           <li><a href="https://github.com/hasanradi93">GitHub</a></li>
-          <li><a href="/">RAZOV home</a></li>
+          <li><a href="/">RAZOV.tech home</a></li>
         </ul>
       </nav>
     </div>
     <div class="container footer__bottom">
-      <p>© 2026 RAZOV.tech solutions</p>
-      <p class="footer__family"><span class="footer__dots" aria-hidden="true"><i></i><i></i><i></i></span><span>DataPilot AI, SQLNext and SchemaZone are part of <strong>RAZOV.tech solutions</strong></span></p>
+      <p>© 2026 Razov DB</p>
+      <p class="footer__family"><span class="footer__dots" aria-hidden="true"><i></i><i></i><i></i></span><span>DataPilot AI, SQLNext and SchemaZone are part of <strong>Razov DB</strong></span></p>
     </div>
     <nav class="container footer__legal" aria-label="Legal">
       <a href="legal.html#terms">Terms</a>

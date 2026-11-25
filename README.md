@@ -1,13 +1,13 @@
-# RAZOV DB: database products site
+# Razov DB: database products site
 
-The database products site of **RAZOV.tech solutions**, published with GitHub Pages at
+The site of **Razov DB**, the database line of RAZOV.tech solutions, published with GitHub Pages at
 <https://hasanradi93.github.io/razov-db/>. It presents the three database products:
 
 - **DataPilot AI**: ask your company's database questions in plain words.
 - **SQLNext**: convert MySQL databases to newer versions, with every change explained.
 - **SchemaZone**: see a `.sql` file as an interactive ER diagram, in your browser.
 
-The root <https://hasanradi93.github.io/> is a small RAZOV hub (repo `hasanradi93.github.io`) with two
+The root <https://hasanradi93.github.io/> is the RAZOV.tech solutions hub (repo `hasanradi93.github.io`) with two
 doors: Razov Bots (`/razov-bots/`, its own repo) and this site.
 
 ## What is in the repo
@@ -22,7 +22,9 @@ Plain static files with no framework, build step or npm:
 | `assets/css/sections.css` | Hero, products, sketches, how-to, pricing, contact |
 | `assets/js/site.js` | Theme toggle, mobile menu, reveals, tabs, copy buttons, store link |
 | `assets/js/hero-network.js` | The animated database network on the hero canvas |
-| `assets/img/` | Logo mark and social images |
+| `assets/img/` | The star mark (`logo-mark.svg`), the apple-touch icon and the social image (`og-image.png`) |
+| `assets/fonts/` | Anybody and Readex Pro, the razov.tech brand fonts (SIL OFL, see `OFL.txt`) |
+| `favicon.svg` | The star mark on a rounded square, in the DB violet |
 | `legal.html` | Terms, privacy and refunds for the company (linked in every footer) |
 | `datapilot/` | DataPilot AI product page, published from the DataPilot repo; do not edit by hand |
 | `schemazone/` | The built SchemaZone app; do not edit by hand |
@@ -64,6 +66,10 @@ only works on the live site, or when this folder is served under a `razov-db/` p
 
 ## Notes for editors
 
+- The header carries the razov.tech brand, shared with Razov Bots: the eight-point star (in the DB
+  violet), `razov.tech`, the branch arrow and the leaf `db`. `razov.tech` links to the hub
+  <https://hasanradi93.github.io/> until the razov.tech domain is live; then it becomes
+  `https://razov.tech`. The star is the `#star` symbol at the top of each page.
 - Colours, fonts and spacing are CSS custom properties at the top of
   `assets/css/base.css`, with a dark set (default) and a light set.
 - Sections inside `<main>` use `content-visibility: auto` so the first paint

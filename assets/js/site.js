@@ -1,4 +1,4 @@
-/* RAZOV.tech solutions: site behaviour.
+/* Razov DB: site behaviour.
    No libraries. Every feature degrades to plain HTML when JS is off. */
 
 // Store link. While empty, the store area stays hidden and the paid DataPilot
